@@ -16,11 +16,9 @@ public class AdventureGame {
     public void startGame() {
         //Simple Attack Cycle
         player.createNewPlayerObject();
-        player.showAllPlayerStats();
-        e.showAllEntityStats();
+
         showAttackLoopMenu();
-        player.showAllPlayerStats();
-        e.showAllEntityStats();
+
     }
 
 
@@ -28,6 +26,7 @@ public class AdventureGame {
         System.out.println("====================");
         System.out.println("What do you want to do?");
         System.out.println("1: Attack");
+        System.out.println("2: Show inventory");
         System.out.println("====================");
     }
 
@@ -38,6 +37,12 @@ public class AdventureGame {
             if (attackMenuInput == 1) {
                 return player.playerAttacksOtherEntity(e);
             }
+            if (attackMenuInput == 2) {
+                //Öffnet inventar
+            }
+        } else {
+            System.out.println("Use digits like '1'!");
+            return true;
         }
         return true;
     }

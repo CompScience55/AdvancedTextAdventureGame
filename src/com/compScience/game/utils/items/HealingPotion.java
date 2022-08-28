@@ -12,7 +12,6 @@ public class HealingPotion extends Item {
         super(name, howMuchCoinsWorth, itemAmount);
         this.healAmount = 5 + potionLevel * 1.5;
         this.potionLevel = 1;
-
     }
 
     public double getHealAmount() {

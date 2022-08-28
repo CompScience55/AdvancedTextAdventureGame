@@ -1,5 +1,7 @@
 package com.compScience.game.entities;
 
+import com.compScience.game.utils.Inventory;
+
 import java.util.Random;
 
 public class Player extends Entity {
@@ -15,7 +17,7 @@ public class Player extends Entity {
     private double healthPoints;
 
     //Player Utils
-    //Inventory
+    Inventory playerInventory;
     //Money
 
     //Utils
@@ -28,6 +30,7 @@ public class Player extends Entity {
         this.xpBorder = 100;
         this.damagePoints = 5;
         this.healthPoints = 25;
+        this.playerInventory = new Inventory();
     }
 
     public void showAllPlayerStats() {
