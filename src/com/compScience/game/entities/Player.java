@@ -30,7 +30,7 @@ public class Player extends Entity {
         this.xpBorder = 100;
         this.damagePoints = 5;
         this.healthPoints = 25;
-        this.playerInventory = new Inventory();
+        this.playerInventory = new Inventory(this);
     }
 
     public void showAllPlayerStats() {
