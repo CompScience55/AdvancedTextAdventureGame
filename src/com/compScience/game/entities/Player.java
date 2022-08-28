@@ -14,6 +14,10 @@ public class Player extends Entity {
     private double damagePoints;
     private double healthPoints;
 
+    //Player Utils
+    //Inventory
+    //Money
+
     //Utils
     Random r = new Random();
 

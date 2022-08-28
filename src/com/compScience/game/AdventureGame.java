@@ -42,6 +42,7 @@ public class AdventureGame {
         return true;
     }
 
+    //Attack cycle
     public void showAttackLoopMenu() {
         boolean isEnemyAlive = true;
 
