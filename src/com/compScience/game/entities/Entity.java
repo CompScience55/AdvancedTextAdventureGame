@@ -1,5 +1,7 @@
 package com.compScience.game.entities;
 
+import java.util.Random;
+
 public class Entity {
 
     //Entity Attributes
@@ -9,10 +11,12 @@ public class Entity {
     private int entityLevel;
     private final double customXPAmount;
 
+    Random r = new Random();
+
     public Entity(String name, double damagePoints, double healthPoints, int entityLevel) {
         this.customXPAmount = entityLevel * 1.25;
         this.entityName = name;
-        this.damagePoints = 8;
+        this.damagePoints = damagePoints;
         this.healthPoints = healthPoints;
         this.entityLevel = entityLevel;
     }
@@ -23,6 +27,7 @@ public class Entity {
 
     public boolean checkForEntityDeath(Player player) {
         if (healthPoints <= 0) {
+            System.out.println("====================");
             System.out.println("You slayed a " + getEntityName() + ".");
             System.out.println("You received " + customXPAmount + " XP.");
             player.setCurrentXpProgressionCounter(player.getCurrentXpProgressionCounter() + customXPAmount);
@@ -30,6 +35,20 @@ public class Entity {
             return false;
         }
         return true;
+    }
+
+    public boolean attackPlayer(Player p) {
+        System.out.println("You get attacked by the " + this.getEntityName() + ".");
+        int randomHitChanceIndex = r.nextInt(100)+1;
+
+        if (randomHitChanceIndex <= 15) {
+            System.out.println("Your enemy missed the attack. You took no damage.");
+            return true;
+        } else {
+            System.out.println("You took " + this.getDamagePoints() + " HP damage from the attack.");
+            p.setHealthPoints(p.getHealthPoints() - this.getDamagePoints());
+            return p.checkForPlayerDeath();
+        }
     }
 
     public void showAllEntityStats() {
@@ -50,5 +69,9 @@ public class Entity {
 
     public void setHealthPoints(double healthPoints) {
         this.healthPoints = healthPoints;
+    }
+
+    public double getDamagePoints() {
+        return damagePoints;
     }
 }

@@ -19,6 +19,7 @@ public class Player {
     //Player Utils
     private Inventory playerInventory;
     //Money
+    private double moneyCounter;
 
     //Utils
     Random r = new Random();
@@ -31,6 +32,7 @@ public class Player {
         this.damagePoints = 5;
         this.healthPoints = 25;
         this.playerInventory = new Inventory(this);
+        this.moneyCounter = 10;
     }
 
     public void showAllPlayerStats() {
@@ -69,9 +71,18 @@ public class Player {
         }
     }
 
+    public boolean checkForPlayerDeath() {
+        if (healthPoints <= 0) {
+            System.out.println("====================");
+            System.out.println("You died in combat!");
+            System.out.println("You'll lose half of your coins!");
+            moneyCounter /= 2;
+            return false;
+        }
+        return true;
+    }
+
     //Getter & Setter
-
-
     public Inventory getPlayerInventory() {
         return playerInventory;
     }

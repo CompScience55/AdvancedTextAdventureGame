@@ -2,6 +2,7 @@ package com.compScience.game;
 
 import com.compScience.game.entities.Entity;
 import com.compScience.game.entities.Player;
+import com.compScience.game.entities.Slime;
 import com.compScience.game.utils.items.Potion;
 
 import java.util.Scanner;
@@ -12,9 +13,12 @@ public class AdventureGame {
     Player player = new Player();
 
     //Test Entity
-    Entity e = new Entity("Slime", 6, 15, 2);
+    Entity e = new Slime(20);
 
+    //Main Loop
     public void startGame() {
+        //Over Attack Encounter Cycle
+
         //Simple Attack Cycle
         player.createNewPlayerObject();
         showAttackLoopMenu();
@@ -87,7 +91,6 @@ public class AdventureGame {
         }
     }
 
-
     public void showAttackMenuOptions() {
         System.out.println("====================");
         System.out.println("Your HP: " + player.getHealthPoints() + " |  Enemy HP: " + e.getHealthPoints());
@@ -125,10 +128,12 @@ public class AdventureGame {
     //Attack cycle
     public void showAttackLoopMenu() {
         boolean isEnemyAlive = true;
+        boolean isPlayerAlive = true;
 
-        while (isEnemyAlive) {
+        while (isEnemyAlive && isPlayerAlive) {
             showAttackMenuOptions();
              isEnemyAlive = processPlayerMenuInput();
+             isPlayerAlive = e.attackPlayer(player);
         }
     }
 }
