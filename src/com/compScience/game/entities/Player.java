@@ -4,7 +4,7 @@ import com.compScience.game.utils.Inventory;
 
 import java.util.Random;
 
-public class Player extends Entity {
+public class Player {
 
     //Experience System Variables
     private int playerLevel;
@@ -17,7 +17,7 @@ public class Player extends Entity {
     private double healthPoints;
 
     //Player Utils
-    Inventory playerInventory;
+    private Inventory playerInventory;
     //Money
 
     //Utils
@@ -70,6 +70,20 @@ public class Player extends Entity {
     }
 
     //Getter & Setter
+
+
+    public Inventory getPlayerInventory() {
+        return playerInventory;
+    }
+
+    public double getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(double healthPoints) {
+        this.healthPoints = healthPoints;
+    }
+
     public double getXpBorder() {
         return xpBorder;
     }
