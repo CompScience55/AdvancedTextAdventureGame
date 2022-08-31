@@ -19,6 +19,7 @@ public class Player {
     private double damagePoints;
     private double healthPoints;
     private double playerLevelHealthPoints;
+    private double playerLevelManaPoints;
 
     //Player Utils
     private Inventory playerInventory;
@@ -37,10 +38,11 @@ public class Player {
         this.playerLevel = 1;
         this.currentXpProgressionCounter = 0;
         this.manaPoints = 100;
-        this.xpBorder = 100;
+        this.xpBorder = 20;
         this.damagePoints = 6;
         this.healthPoints = 30;
         playerLevelHealthPoints = healthPoints;
+        playerLevelManaPoints = manaPoints;
         this.playerInventory = new Inventory(this);
         this.moneyCounter = 10;
         //Starting Spell
@@ -109,6 +111,7 @@ public class Player {
             damagePoints+=2;
             healthPoints+=5;
             playerLevelHealthPoints = healthPoints;
+            playerLevelManaPoints = manaPoints;
             System.out.println("You level increased to " + playerLevel + "!");
         }
     }
@@ -166,5 +169,13 @@ public class Player {
 
     public void setManaPoints(double manaPoints) {
         this.manaPoints = manaPoints;
+    }
+
+    public double getPlayerLevelHealthPoints() {
+        return playerLevelHealthPoints;
+    }
+
+    public double getPlayerLevelManaPoints() {
+        return playerLevelManaPoints;
     }
 }

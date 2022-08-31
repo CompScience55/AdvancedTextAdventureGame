@@ -33,7 +33,12 @@ public class Potion {
                 System.out.println("You consumed a " + potion.getName() + ". You healed " + potion.refillAmount + " HP. Total HP: " + owner.getHealthPoints());
                 potion.potionAmount-=1;
             }
-            //Mana Potion etc.
+            case "Mana Potion": {
+                potion.owner.setManaPoints(potion.owner.getManaPoints() + potion.refillAmount);
+                System.out.println("You consumed a " + potion.getName() + ". Your Mana Points have restored by " + potion.refillAmount + " MP.");
+                potion.potionAmount-=1;
+            }
+            //Other Potions
         }
     }
 
@@ -47,5 +52,9 @@ public class Potion {
 
     public int getPotionAmount() {
         return potionAmount;
+    }
+
+    public double getHowMuchCoinsWorth() {
+        return howMuchCoinsWorth;
     }
 }
