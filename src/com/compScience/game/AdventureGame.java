@@ -76,6 +76,7 @@ public class AdventureGame {
         }
         return true;
     }
+
     //method for creating random enemies
     public void createNewRandomEntity() {
 
@@ -166,7 +167,7 @@ public class AdventureGame {
     //Attacking loop stuff
     public void showAttackMenuOptions() {
         System.out.println("====================");
-        System.out.println("Your HP: " + player.getHealthPoints() + " |  Enemy HP: " + e.getHealthPoints());
+        System.out.println("Your HP: " + player.getHealthPoints() + " |  " + e.getEntityName() + " HP: " + e.getHealthPoints());
         System.out.println("====================");
         System.out.println("What do you want to do?");
         System.out.println("1: Attack");
@@ -174,12 +175,33 @@ public class AdventureGame {
         System.out.println("====================");
     }
 
+    public int showDifferentAttackingOptionsForPlayer() {
+        System.out.println("====================");
+        System.out.println("What do you want to do?");
+        System.out.println("1: Melee Attack");
+        System.out.println("2: Magic");
+        System.out.println("====================");
+
+        if (scanner.hasNextInt()) {
+            int input = scanner.nextInt();
+            if (input == 1 || input == 2) {
+                return input;
+            } else {
+                System.out.println("Use the options from above!");
+            }
+        } else {
+            System.out.println("Use digits like '1'!");
+        }
+        return 999;
+    }
+
     public boolean processPlayerMenuInput() {
         if (scanner.hasNextInt()) {
             int attackMenuInput = scanner.nextInt();
 
             if (attackMenuInput == 1) {
-                return player.playerAttacksOtherEntity(e);
+                int attackOptionsIndex = showDifferentAttackingOptionsForPlayer();
+                return player.playerAttacksOtherEntity(e, attackOptionsIndex);
             }
             if (attackMenuInput == 2) {
                 //Inventory Menu Loop
@@ -197,6 +219,8 @@ public class AdventureGame {
         }
         return true;
     }
+
+
     //Attack cycle
     public void showAttackLoopMenu() {
         boolean isEnemyAlive = true;
@@ -205,7 +229,8 @@ public class AdventureGame {
         while (isEnemyAlive && isPlayerAlive) {
             showAttackMenuOptions();
              isEnemyAlive = processPlayerMenuInput();
-             isPlayerAlive = e.attackPlayer(player);
+             if (isEnemyAlive)
+              isPlayerAlive = e.attackPlayer(player);
         }
     }
 }

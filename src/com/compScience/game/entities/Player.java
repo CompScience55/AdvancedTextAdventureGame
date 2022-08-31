@@ -1,8 +1,11 @@
 package com.compScience.game.entities;
 
 import com.compScience.game.utils.Inventory;
+import com.compScience.game.utils.MagicSpell;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Player {
 
@@ -19,11 +22,13 @@ public class Player {
 
     //Player Utils
     private Inventory playerInventory;
+    private ArrayList<MagicSpell> magicSpells = new ArrayList<>();
     //Money
     private double moneyCounter;
 
     //Utils
     Random r = new Random();
+    Scanner scanner = new Scanner(System.in);
 
     public Player() {
     }
@@ -38,31 +43,62 @@ public class Player {
         playerLevelHealthPoints = healthPoints;
         this.playerInventory = new Inventory(this);
         this.moneyCounter = 10;
+        //Starting Spell
+        magicSpells.add(new MagicSpell("Fire", 20, 12, this));
     }
 
-    public void showAllPlayerStats() {
-        System.out.println("-----------------");
-        System.out.println("Stats:");
-        System.out.println("HP: " + healthPoints);
-        System.out.println("LVL: " + playerLevel);
-        System.out.println("XPBorder: " + xpBorder);
-        System.out.println("XPProgression: " + currentXpProgressionCounter);
-        System.out.println("Mana: " + manaPoints);
-        System.out.println("Damage: " + damagePoints);
-    }
-
-    public boolean playerAttacksOtherEntity(Entity e) {
-        System.out.println("You attack a " + e.getEntityName() + ".");
-        int randomHitChanceIndex = r.nextInt(100)+1;
-
-        if (randomHitChanceIndex <= 15) {
-            System.out.println("Your hit was blocked by your enemy!");
-            return true;
-        } else {
-            System.out.println("Your enemy took " + damagePoints + " HP damage by your hit.");
-            e.setHealthPoints(e.getHealthPoints() - damagePoints);
-             return e.checkForEntityDeath(this);
+    //Using Magic
+    public void showAllSpellsAvailableForPlayer() {
+        System.out.println("====================");
+        System.out.println("Which spell do you want to use?");
+        for (int i = 0; i < magicSpells.size(); i++) {
+            System.out.println(i+1 + ": " + magicSpells.get(i).getName() + " Spell | Cost in Mana: " + magicSpells.get(i).getManaCost());
         }
+        System.out.println("====================");
+    }
+
+    public void processSpellSelectionInput(Entity damageTaker) {
+        if (scanner.hasNextInt()) {
+            int spellIndex = scanner.nextInt();
+            magicSpells.get(spellIndex-1).executeMagicSpell(damageTaker, r);
+        } else {
+            System.out.println("Use digits like '1'!");
+        }
+    }
+
+
+    public boolean playerAttacksOtherEntity(Entity e, int attackOptionIndex) {
+
+            if (attackOptionIndex == 1)  {
+                System.out.println("You attack a " + e.getEntityName() + ".");
+                int randomHitChanceIndex = r.nextInt(100) + 1;
+                int randomCriticalChanceIndex = r.nextInt(100)+1;
+
+                //Hit missed
+                if (randomHitChanceIndex <= 15) {
+                    System.out.println("Your hit was blocked by your enemy!");
+                    return true;
+                } else {
+                    //Critical Hit
+                    if (randomCriticalChanceIndex <= 10) {
+                        System.out.println("CRITICAL HIT! You dealt " + damagePoints*1.5 + " HP damage by punching your enemy.");
+                        e.setHealthPoints(e.getHealthPoints() - damagePoints*1.5);
+                        return e.checkForEntityDeath(this);
+                    } else {
+                        //Normal Hit
+                        System.out.println("You dealt " + damagePoints + " HP damage by punching your enemy.");
+                        e.setHealthPoints(e.getHealthPoints() - damagePoints);
+                        return e.checkForEntityDeath(this);
+                    }
+                }
+            }
+        if (attackOptionIndex == 2)  {
+                showAllSpellsAvailableForPlayer();
+                processSpellSelectionInput(e);
+                return e.checkForEntityDeath(this);
+        }
+
+        return true;
     }
 
     public void checkForLevelUp() {
@@ -124,4 +160,11 @@ public class Player {
         return playerLevel;
     }
 
+    public double getManaPoints() {
+        return manaPoints;
+    }
+
+    public void setManaPoints(double manaPoints) {
+        this.manaPoints = manaPoints;
+    }
 }
