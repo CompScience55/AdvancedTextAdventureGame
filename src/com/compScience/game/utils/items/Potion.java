@@ -6,7 +6,7 @@ public class Potion {
 
     private String name;
     private double howMuchCoinsWorth;
-    private int amount;
+    private int potionAmount;
     private double refillAmount;
     private int potionLevel;
 
@@ -15,10 +15,10 @@ public class Potion {
 
     private Player owner;
 
-    public Potion(String name, double howMuchCoinsWorth, int amount, int potionLevel, Player owner) {
+    public Potion(String name, double howMuchCoinsWorth, int potionAmount, int potionLevel, Player owner) {
         this.name = name;
         this. howMuchCoinsWorth = howMuchCoinsWorth;
-        this.amount = amount;
+        this.potionAmount = potionAmount;
         this.refillAmount = 5 + 1.25 * potionLevel;
         this.potionLevel = potionLevel;
         this.owner = owner;
@@ -31,7 +31,9 @@ public class Potion {
             case "Potion of Healing": {
                 potion.owner.setHealthPoints(potion.owner.getHealthPoints() + potion.refillAmount);
                 System.out.println("You consumed a " + potion.getName() + ". You healed " + potion.refillAmount + " HP. Total HP: " + owner.getHealthPoints());
+                potion.potionAmount-=1;
             }
+            //Mana Potion etc.
         }
     }
 
@@ -41,5 +43,9 @@ public class Potion {
 
     public String getName() {
         return name;
+    }
+
+    public int getPotionAmount() {
+        return potionAmount;
     }
 }

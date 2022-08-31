@@ -15,6 +15,7 @@ public class Player {
     private double manaPoints;
     private double damagePoints;
     private double healthPoints;
+    private double playerLevelHealthPoints;
 
     //Player Utils
     private Inventory playerInventory;
@@ -24,13 +25,17 @@ public class Player {
     //Utils
     Random r = new Random();
 
+    public Player() {
+    }
+
     public void createNewPlayerObject() {
         this.playerLevel = 1;
         this.currentXpProgressionCounter = 0;
         this.manaPoints = 100;
         this.xpBorder = 100;
-        this.damagePoints = 5;
-        this.healthPoints = 25;
+        this.damagePoints = 6;
+        this.healthPoints = 30;
+        playerLevelHealthPoints = healthPoints;
         this.playerInventory = new Inventory(this);
         this.moneyCounter = 10;
     }
@@ -67,6 +72,7 @@ public class Player {
             playerLevel++;
             damagePoints+=2;
             healthPoints+=5;
+            playerLevelHealthPoints = healthPoints;
             System.out.println("You level increased to " + playerLevel + "!");
         }
     }
@@ -77,12 +83,23 @@ public class Player {
             System.out.println("You died in combat!");
             System.out.println("You'll lose half of your coins!");
             moneyCounter /= 2;
+            healthPoints = playerLevelHealthPoints;
             return false;
         }
         return true;
     }
 
     //Getter & Setter
+
+
+    public double getMoneyCounter() {
+        return moneyCounter;
+    }
+
+    public void setMoneyCounter(double moneyCounter) {
+        this.moneyCounter = moneyCounter;
+    }
+
     public Inventory getPlayerInventory() {
         return playerInventory;
     }
@@ -93,14 +110,6 @@ public class Player {
 
     public void setHealthPoints(double healthPoints) {
         this.healthPoints = healthPoints;
-    }
-
-    public double getXpBorder() {
-        return xpBorder;
-    }
-
-    public void setXpBorder(double xpBorder) {
-        this.xpBorder = xpBorder;
     }
 
     public double getCurrentXpProgressionCounter() {
@@ -115,7 +124,4 @@ public class Player {
         return playerLevel;
     }
 
-    public void setPlayerLevel(int playerLevel) {
-        this.playerLevel = playerLevel;
-    }
 }
