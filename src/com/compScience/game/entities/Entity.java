@@ -20,7 +20,7 @@ public class Entity {
         this.damagePoints = damagePoints;
         this.healthPoints = healthPoints;
         this.entityLevel = entityLevel;
-        customMoneyDropAmount = customMoneyDropAmount;
+        this.customMoneyDropAmount = customMoneyDropAmount;
     }
 
     public Entity() {
