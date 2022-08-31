@@ -1,13 +1,15 @@
-package com.compScience.game.entities;
+package com.compScience.game.entities.plains;
 
 
-public class Slime extends Entity{
+import com.compScience.game.entities.Entity;
+
+public class Slime extends Entity {
 
     private final double customXPAmount;
 
     public Slime(int level, double customMoneyDropAmount) {
         super("Slime", 6+level, 15+5*level, level, customMoneyDropAmount);
-        this.customXPAmount = level * 1.25;
+        this.customXPAmount = level * 2;
     }
 
     /*
