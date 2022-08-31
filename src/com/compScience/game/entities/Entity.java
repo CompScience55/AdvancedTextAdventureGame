@@ -10,15 +10,17 @@ public class Entity {
     private double healthPoints;
     private int entityLevel;
     private final double customXPAmount;
+    private double customMoneyDropAmount;
 
     Random r = new Random();
 
-    public Entity(String name, double damagePoints, double healthPoints, int entityLevel) {
+    public Entity(String name, double damagePoints, double healthPoints, int entityLevel, double customMoneyDropAmount) {
         this.customXPAmount = entityLevel * 1.25;
         this.entityName = name;
         this.damagePoints = damagePoints;
         this.healthPoints = healthPoints;
         this.entityLevel = entityLevel;
+        customMoneyDropAmount = customMoneyDropAmount;
     }
 
     public Entity() {
@@ -30,6 +32,8 @@ public class Entity {
             System.out.println("====================");
             System.out.println("You slayed a " + getEntityName() + ".");
             System.out.println("You received " + customXPAmount + " XP.");
+            System.out.println("You received " + customMoneyDropAmount + " Coins.");
+            player.setMoneyCounter(player.getMoneyCounter() + customMoneyDropAmount);
             player.setCurrentXpProgressionCounter(player.getCurrentXpProgressionCounter() + customXPAmount);
             player.checkForLevelUp();
             return false;

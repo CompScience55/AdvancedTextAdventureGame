@@ -1,10 +1,9 @@
 package com.compScience.game;
 
-import com.compScience.game.entities.Entity;
-import com.compScience.game.entities.Player;
-import com.compScience.game.entities.Slime;
+import com.compScience.game.entities.*;
 import com.compScience.game.utils.items.Potion;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class AdventureGame {
@@ -13,7 +12,10 @@ public class AdventureGame {
     Player player = new Player();
 
     //Test Entity
-    Entity e = new Slime(20);
+    Entity e;
+
+    //Util stuff
+    Random r = new Random();
 
     //Main Loop
     public void startGame() {
@@ -21,10 +23,79 @@ public class AdventureGame {
 
         //Simple Attack Cycle
         player.createNewPlayerObject();
-        showAttackLoopMenu();
+        showWanderingLoopMenu();
+
+    }
+    //Wandering Loop
+    public void showWanderingLoopMenu() {
+        boolean playerNotWantsToExit = true;
+
+        while (playerNotWantsToExit) {
+            showPlayerWanderingLoopOptions();
+            playerNotWantsToExit = processPlayerWanderingLoopInput();
+        }
     }
 
-    //Item Use Loop
+    //player wandering loop
+    public void showPlayerWanderingLoopOptions() {
+        System.out.println("====================");
+        System.out.println("Your HP: " + player.getHealthPoints() + " | Money: " + player.getMoneyCounter());
+        System.out.println("====================");
+        System.out.println("What do you want to do?");
+        System.out.println("1: Explore");
+        System.out.println("2: Show Inventory");
+        //Loading and saving of players savedata.
+        System.out.println("3: Load Recent Player Data");
+        System.out.println("4: Save & Exit");
+        System.out.println("====================");
+    }
+
+    public boolean processPlayerWanderingLoopInput() {
+        if (scanner.hasNextInt()) {
+            int attackMenuInput = scanner.nextInt();
+
+            if (attackMenuInput == 1) {
+                createNewRandomEntity();
+                showAttackLoopMenu();
+            }
+            if (attackMenuInput == 2) {
+                //Inventory Menu Loop
+                boolean playerWantsToExitInventory = true;
+
+                while (playerWantsToExitInventory) {
+                    showInventoryMenuOptions();
+                    playerWantsToExitInventory = processPlayerInventoryMenuInput();
+                }
+            }
+            if (attackMenuInput == 4) {
+                //exit
+                return false;
+            }
+        } else {
+            System.out.println("Use digits like '1'!");
+        }
+        return true;
+    }
+    //method for creating random enemies
+    public void createNewRandomEntity() {
+
+        int newEntityIndex = r.nextInt(4)+1;
+
+        switch (newEntityIndex) {
+            case 1: e = new Slime(player.getPlayerLevel()+2, 3);
+                    break;
+            case 2: e = new Wolf(player.getPlayerLevel() + 3, 4);
+                    break;
+            case 3: e = new Zombie(player.getPlayerLevel() + 1, 7);
+                    break;
+            case 4: e = new Spider(player.getPlayerLevel(), 2.5);
+                    break;
+            //More cases
+        }
+
+    }
+
+    //Item use loop
     public void showInventoryMenuOptions() {
         System.out.println("====================");
         System.out.println("1: Use an Item");
@@ -91,6 +162,8 @@ public class AdventureGame {
         }
     }
 
+
+    //Attacking loop stuff
     public void showAttackMenuOptions() {
         System.out.println("====================");
         System.out.println("Your HP: " + player.getHealthPoints() + " |  Enemy HP: " + e.getHealthPoints());
@@ -124,7 +197,6 @@ public class AdventureGame {
         }
         return true;
     }
-
     //Attack cycle
     public void showAttackLoopMenu() {
         boolean isEnemyAlive = true;
