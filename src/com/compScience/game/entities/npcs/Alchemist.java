@@ -19,7 +19,7 @@ public class Alchemist extends NPC{
         alchemistShopInventory.add(new Potion("Mana Potion", 10, 3, 1));
     }
 
-
+    //
     public void showAlchemistInventory(Player player) {
         boolean isDone = true;
         while (isDone) {
