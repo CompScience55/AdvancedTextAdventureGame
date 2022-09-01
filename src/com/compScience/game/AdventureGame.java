@@ -9,6 +9,7 @@ import com.compScience.game.entities.mountains.Ghost;
 import com.compScience.game.entities.mountains.Goblin;
 import com.compScience.game.entities.mountains.Griffin;
 import com.compScience.game.entities.mountains.Werewolf;
+import com.compScience.game.entities.npcs.Alchemist;
 import com.compScience.game.entities.plains.Bandit;
 import com.compScience.game.entities.plains.EarthGolem;
 import com.compScience.game.entities.plains.Slime;
@@ -144,7 +145,7 @@ public class AdventureGame {
                     System.out.println("Blacksmith:" + blacksmithFound);
                     System.out.println("Alchemist:" + alchemistFound);
                     System.out.println("wizard:" + wizardFound);
-                    //TODO: Merchant
+                    openMerchantShop();
                     break;
                 }
                 case 2: {
@@ -203,7 +204,7 @@ public class AdventureGame {
         int difficultyMerchantChanceBoundary = 0;
 
         if (mapDifficultySelection == 1) {
-            difficultyMerchantChanceBoundary = 15;
+            difficultyMerchantChanceBoundary = 90;
         }
         if (mapDifficultySelection == 3) {
             difficultyMerchantChanceBoundary = 20;
@@ -238,38 +239,19 @@ public class AdventureGame {
         }
     }
 
+
     //TODO: Edit Shop
-    /*
     //merchant shop
     public void openMerchantShop() {
         if (alchemistFound) {
-            ArrayList<Potion> alchemistInventory = new ArrayList<>();
-            alchemistInventory.add(new Potion("Potion of Healing", 5, 3, 1, player));
-            alchemistInventory.add(new Potion("Mana Potion", 5, 3, 1, player));
-            System.out.println("====================");
-            System.out.println("Alchemist: Hello Traveler! Are you interested in some goods?");
-            System.out.println("====================");
-            System.out.println("Alchemist's Inventory:");
-            for (int i = 0; i < alchemistInventory.size(); i++) {
-                System.out.println(i+1 + ": " + alchemistInventory.get(i).getName() + " | Price: " + alchemistInventory.get(i).getHowMuchCoinsWorth() + " Coins.");
-            }
-            System.out.println("====================");
-
-            if (scanner.hasNextInt()) {
-                int index = scanner.nextInt();
-                //Buy item
-                buyItemFromAlchemist(player.getPlayerInventory(), alchemistInventory, index);
-            } else {
-                System.out.println("Use digits like '1'!");
-            }
+            Alchemist alchemist = new Alchemist("Old Alchemist");
+            alchemist.showAlchemistInventory(player);
         }
     }
-    //merchant buy logic
-    public void buyItemFromAlchemist(Inventory playerInventory, ArrayList<Potion> alchemistInventory, int itemIndex) {
-        System.out.println("Y");
-    }
+
+
     
-     */
+
 
     //method for creating random enemies
     public void createNewRandomEntity(int mapDifficultySelection, int mapZoneSelection) {
@@ -541,8 +523,9 @@ public class AdventureGame {
                 }
 
                 if (itemIndex != 999) {
+                    //TODO: Edit when potion disappears.
                     Potion consumingPotion = player.getPlayerInventory().getPotionInInventory().get(itemIndex);
-                    consumingPotion.consumePotion(consumingPotion);
+                    consumingPotion.consumePotion(consumingPotion, player);
                 }
             break;
         }
