@@ -22,7 +22,6 @@ public class Entity {
         this.entityLevel = entityLevel;
         this.customMoneyDropAmount = customMoneyDropAmount;
     }
-
     public Entity() {
         this.customXPAmount = entityLevel * 1.25;
     }
