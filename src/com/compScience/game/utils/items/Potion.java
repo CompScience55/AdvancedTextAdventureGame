@@ -40,11 +40,13 @@ public class Potion {
                 player.setHealthPoints(player.getHealthPoints() + potion.refillAmount);
                 System.out.println("You consumed a " + potion.getName() + ". You healed " + potion.refillAmount + " HP. Total HP: " + owner.getHealthPoints());
                 potion.potionAmount-=1;
+                break;
             }
             case "Mana Potion": {
                 player.setManaPoints(player.getManaPoints() + potion.refillAmount);
                 System.out.println("You consumed a " + potion.getName() + ". Your Mana Points have restored by " + potion.refillAmount + " MP.");
                 potion.potionAmount-=1;
+                break;
             }
             //Other Potions
         }
@@ -64,5 +66,17 @@ public class Potion {
 
     public double getHowMuchCoinsWorth() {
         return howMuchCoinsWorth;
+    }
+
+    public double getRefillAmount() {
+        return refillAmount;
+    }
+
+    public void setPotionAmount(int potionAmount) {
+        this.potionAmount = potionAmount;
+    }
+
+    public int getPotionLevel() {
+        return potionLevel;
     }
 }

@@ -10,14 +10,13 @@ import com.compScience.game.entities.mountains.Goblin;
 import com.compScience.game.entities.mountains.Griffin;
 import com.compScience.game.entities.mountains.Werewolf;
 import com.compScience.game.entities.npcs.Alchemist;
+import com.compScience.game.entities.npcs.Wizard;
 import com.compScience.game.entities.plains.Bandit;
 import com.compScience.game.entities.plains.EarthGolem;
 import com.compScience.game.entities.plains.Slime;
 import com.compScience.game.entities.plains.Snake;
-import com.compScience.game.utils.Inventory;
 import com.compScience.game.utils.items.Potion;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -59,6 +58,8 @@ public class AdventureGame {
             playerNotWantsToExit = processPlayerWanderingLoopInput();
         }
     }
+
+    //TODO: false input fix in every method
 
     //player wandering loop
     public void showPlayerWanderingLoopOptions() {
@@ -142,9 +143,6 @@ public class AdventureGame {
                     createNewRandomEntity(mapDifficultySelection, mapZoneSelection);
                     showAttackLoopMenu();
                     checkIfMerchantWasFound(mapZoneSelection, mapDifficultySelection);
-                    System.out.println("Blacksmith:" + blacksmithFound);
-                    System.out.println("Alchemist:" + alchemistFound);
-                    System.out.println("wizard:" + wizardFound);
                     openMerchantShop();
                     break;
                 }
@@ -156,6 +154,7 @@ public class AdventureGame {
                         showInventoryMenuOptions();
                         playerWantsToExitInventory = processPlayerInventoryMenuInput();
                     }
+                    break;
                 }
                 case 3: {
                     //Nap
@@ -207,7 +206,7 @@ public class AdventureGame {
             difficultyMerchantChanceBoundary = 90;
         }
         if (mapDifficultySelection == 3) {
-            difficultyMerchantChanceBoundary = 20;
+            difficultyMerchantChanceBoundary = 90;
         }
         if (mapDifficultySelection == 3) {
             difficultyMerchantChanceBoundary = 25;
@@ -239,19 +238,18 @@ public class AdventureGame {
         }
     }
 
-
-    //TODO: Edit Shop
+    //TODO: Edit shop
     //merchant shop
     public void openMerchantShop() {
         if (alchemistFound) {
-            Alchemist alchemist = new Alchemist("Old Alchemist");
+            Alchemist alchemist = new Alchemist("Old Alchemist", player);
             alchemist.showAlchemistInventory(player);
         }
+        if (wizardFound) {
+            Wizard wizard = new Wizard("Wise Wizard", player);
+            wizard.showWizardInventory(player);
+        }
     }
-
-
-    
-
 
     //method for creating random enemies
     public void createNewRandomEntity(int mapDifficultySelection, int mapZoneSelection) {
@@ -512,20 +510,32 @@ public class AdventureGame {
                 break;
             case 2:
                 //Item Selection
-                System.out.println("====================");
-                System.out.println("What Item do you want to use?");
-                System.out.println("====================");
-                int itemIndex = 999;
-                if (scanner.hasNextInt()) {
-                    itemIndex = scanner.nextInt()-1;
-                } else {
-                    System.out.println("Use digits like '1'!");
-                }
+                if (!player.getPlayerInventory().getPotionInInventory().isEmpty()) {
+                    System.out.println("====================");
+                    System.out.println("What Item do you want to use?");
+                    System.out.println("====================");
+                    int itemIndex = 9999;
+                    if (scanner.hasNextInt()) {
+                        int input = scanner.nextInt() - 1;
+                        if (0 <= input && input <= player.getPlayerInventory().getPotionInInventory().size()) {
+                            itemIndex = input;
+                        } else {
+                            System.out.println("Use the options above!");
+                        }
+                    } else {
+                        System.out.println("Use digits like '1'!");
+                    }
 
-                if (itemIndex != 999) {
-                    //TODO: Edit when potion disappears.
-                    Potion consumingPotion = player.getPlayerInventory().getPotionInInventory().get(itemIndex);
-                    consumingPotion.consumePotion(consumingPotion, player);
+                    if (itemIndex != 9999) {
+                        Potion consumingPotion = player.getPlayerInventory().getPotionInInventory().get(itemIndex);
+                        consumingPotion.consumePotion(consumingPotion, player);
+
+                        if (consumingPotion.getPotionAmount() == 0) {
+                            player.getPlayerInventory().getPotionInInventory().remove(itemIndex);
+                        }
+                    }
+                } else {
+                    System.out.println("You don't have any potions in your inventory.");
                 }
             break;
         }
@@ -539,7 +549,6 @@ public class AdventureGame {
             System.out.println("Use digits like '1'!");
         }
     }
-
 
     //Attacking loop stuff
     public void showAttackMenuOptions() {
@@ -598,7 +607,6 @@ public class AdventureGame {
         return true;
     }
 
-
     //Attack cycle
     public void showAttackLoopMenu() {
         boolean isEnemyAlive = true;
@@ -609,6 +617,14 @@ public class AdventureGame {
              isEnemyAlive = processPlayerMenuInput();
              if (isEnemyAlive)
               isPlayerAlive = e.attackPlayer(player);
+
+             //TODO: reset boolean if player dies
+             if (!isPlayerAlive) {
+                 wizardFound = false;
+                 blacksmithFound = false;
+                 alchemistFound = false;
+             }
+
         }
     }
 }

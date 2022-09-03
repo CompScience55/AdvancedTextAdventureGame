@@ -3,23 +3,16 @@ package com.compScience.game.entities.npcs;
 import com.compScience.game.entities.Player;
 import com.compScience.game.utils.items.Potion;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Alchemist extends NPC{
 
-    private ArrayList<Potion> alchemistShopInventory = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
 
-    public Alchemist(String name) {
+    public Alchemist(String name, Player player) {
         super(name);
-        alchemistShopInventory.add(new Potion("Potion of Healing", 8, 3, 1));
-        alchemistShopInventory.add(new Potion("Potion of Healing", 8 * 3, 3, 3));
-        alchemistShopInventory.add(new Potion("Mana Potion", 10 * 3, 3, 3));
-        alchemistShopInventory.add(new Potion("Mana Potion", 10, 3, 1));
     }
 
-    //
     public void showAlchemistInventory(Player player) {
         boolean isDone = true;
         while (isDone) {
@@ -39,7 +32,7 @@ public class Alchemist extends NPC{
                         int input = scanner.nextInt();
                         if (input == 1) {
                             correctDigits = false;
-                            //isDone = processPotionInventory(player);
+                            isDone = processPotionInventory(player);
                         } else if (input == 2) {
                             correctDigits = false;
                             isDone = false;
@@ -53,33 +46,111 @@ public class Alchemist extends NPC{
         }
     }
 
-    /*
+    public void showPotionShopOptions() {
+        System.out.println("1: [LVL 1] Potion of Healing | Cost: 10");
+        System.out.println("2: [LVL 3] Potion of Healing | Cost: 30");
+        System.out.println("3: [LVL 1] Mana Potion | Cost: 15");
+        System.out.println("4: [LVL 3] Mana Potion | Cost: 35");
+        System.out.println("5: Exit");
+    }
+
     public boolean processPotionInventory(Player player) {
         System.out.println("====================");
         System.out.println("Alchemist: What do you need?");
         System.out.println("====================");
 
-        for (int i = 0; i < alchemistShopInventory.size(); i++) {
-            System.out.println(i+1 + ": " + alchemistShopInventory.get(i).getCustomNameWithLevel() + " | Cost: " + alchemistShopInventory.get(i).getHowMuchCoinsWorth());
-        }
-        System.out.println(alchemistShopInventory.size() + ": Exit");
+        showPotionShopOptions();
 
         if (scanner.hasNextInt()) {
             int input = scanner.nextInt();
 
-            if (input-1 < alchemistShopInventory.size()) {
-                Potion potion = alchemistShopInventory.get(input-1);
-                System.out.println("You bought a " + potion.getCustomNameWithLevel() + " for " + potion.getHowMuchCoinsWorth() + " coins.");
-                //TODO: consum logic
+            if (input < 6 && input > 0) {
+
+                switch (input) {
+                    case 1: {
+                        Potion potion = new Potion("Potion of Healing", 10, 1, 1, player);
+                        boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
+                        if (hasEnoughCoins) {
+                            addPotionToPlayersInventory(player, potion);
+                            System.out.println("You bought a [LVL 1] Potion of Healing for 10 coins!");
+                        } else {
+                            System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
+                        }
+                        break;
+                    }
+                    case 2: {
+                        Potion potion = new Potion("Potion of Healing", 30, 1, 3, player);
+                        boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
+                        if (hasEnoughCoins) {
+                            addPotionToPlayersInventory(player, potion);
+                            System.out.println("You bought a [LVL 3] Potion of Healing for 30 coins!");
+                        } else {
+                            System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
+                        }
+                        break;
+                    }
+                    case 3: {
+                        Potion potion = new Potion("Mana Potion", 15, 1, 1, player);
+                        boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
+                        if (hasEnoughCoins) {
+                            addPotionToPlayersInventory(player, potion);
+                            System.out.println("You bought a [LVL 1] Mana Potion for 15 coins!");
+                        } else {
+                            System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
+                        }
+                        break;
+                    }
+                    case 4: {
+                        Potion potion = new Potion("Mana Potion", 35, 1, 3, player);
+                        boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
+                        if (hasEnoughCoins) {
+                            addPotionToPlayersInventory(player, potion);
+                            System.out.println("You bought a [LVL 3] Mana Potion for 35 coins!");
+                        } else {
+                            System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
+                        }
+                        break;
+                    }
+                }
+
+            } else {
+                System.out.println("Use the options above!");
             }
-            if (input == alchemistShopInventory.size()) {
+            if (5 == input) {
                 return false;
             }
         } else {
             System.out.println("Use digits like '1'!");
         }
+        return false;
     }
 
-     */
+    public void addPotionToPlayersInventory(Player player, Potion potion) {
+        //Get ArrayList and see if potion already exists. If true increase number
+        //Player array via functions
+        int potionAmount;
+        int potionNotInsideArray = 1;
+        for (int i = 0; i < player.getPlayerInventory().getPotionInInventory().size(); i++) {
+            if (player.getPlayerInventory().getPotionInInventory().get(i).getName().equals(potion.getName()) && player.getPlayerInventory().getPotionInInventory().get(i).getPotionLevel() == potion.getPotionLevel()) {
+                potionNotInsideArray = 2;
+                player.getPlayerInventory().getPotionInInventory().get(i).setPotionAmount(player.getPlayerInventory().getPotionInInventory().get(i).getPotionAmount() + 1);
+                System.out.println("Potion number added Test");
+                break;
+            }
+        }
 
+        if (potionNotInsideArray == 1) {
+            player.getPlayerInventory().getPotionInInventory().add(potion);
+            System.out.println("Potion added Test");
+        }
+    }
+
+    public boolean editPlayersMoneyAfterTransaction(Player player, Potion potion) {
+        if (player.getMoneyCounter() >= potion.getHowMuchCoinsWorth()) {
+            player.setMoneyCounter(player.getMoneyCounter() - potion.getHowMuchCoinsWorth());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

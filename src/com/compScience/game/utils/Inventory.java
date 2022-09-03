@@ -34,12 +34,18 @@ public class Inventory {
             System.out.println("====================");
             System.out.println("Potion Inventory:");
             for (int i = 0; i < potionInInventory.size(); i++) {
-                System.out.println(i+1 + ": " + potionInInventory.get(i).getCustomNameWithLevel() + " | Anzahl: " + potionInInventory.get(i).getPotionAmount());
+                if (potionInInventory.get(i) != null) {
+                    System.out.println(i + 1 + ": " + potionInInventory.get(i).getCustomNameWithLevel() + " | Anzahl: " + potionInInventory.get(i).getPotionAmount());
+                }
             }
         }
     }
 
     public ArrayList<Potion> getPotionInInventory() {
         return potionInInventory;
+    }
+
+    public void setPotionInInventory(ArrayList<Potion> potionInInventory) {
+        this.potionInInventory = potionInInventory;
     }
 }

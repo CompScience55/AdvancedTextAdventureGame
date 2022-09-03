@@ -10,6 +10,7 @@ public class MagicSpell {
     private String name;
     private int manaCost;
     private double dealingDamage;
+    private double spellUpgradeCost = 25;
 
     private Player owner;
 
@@ -37,11 +38,20 @@ public class MagicSpell {
         }
     }
 
+    public void upgradeSpell() {
+        this.dealingDamage += 7;
+        this.spellUpgradeCost += 15;
+    }
+
     public String getName() {
         return name;
     }
 
     public int getManaCost() {
         return manaCost;
+    }
+
+    public double getSpellUpgradeCost() {
+        return spellUpgradeCost;
     }
 }
