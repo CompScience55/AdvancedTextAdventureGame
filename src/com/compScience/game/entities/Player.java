@@ -178,4 +178,8 @@ public class Player {
     public double getPlayerLevelManaPoints() {
         return playerLevelManaPoints;
     }
+
+    public ArrayList<MagicSpell> getMagicSpells() {
+        return magicSpells;
+    }
 }
