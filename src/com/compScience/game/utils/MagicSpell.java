@@ -3,9 +3,10 @@ package com.compScience.game.utils;
 import com.compScience.game.entities.Entity;
 import com.compScience.game.entities.Player;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class MagicSpell {
+public class MagicSpell implements Serializable {
 
     private String name;
     private int manaCost;

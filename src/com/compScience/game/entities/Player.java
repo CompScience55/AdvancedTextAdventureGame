@@ -3,11 +3,12 @@ package com.compScience.game.entities;
 import com.compScience.game.utils.Inventory;
 import com.compScience.game.utils.MagicSpell;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Player {
+public class Player implements Serializable {
 
     //Experience System Variables
     private int playerLevel;
@@ -29,7 +30,6 @@ public class Player {
 
     //Utils
     Random r = new Random();
-    Scanner scanner = new Scanner(System.in);
 
     public Player() {
     }
@@ -44,7 +44,7 @@ public class Player {
         playerLevelHealthPoints = healthPoints;
         playerLevelManaPoints = manaPoints;
         this.playerInventory = new Inventory(this);
-        this.moneyCounter = 10;
+        this.moneyCounter = 50;
         //Starting Spell
         magicSpells.add(new MagicSpell("Fire", 20, 12, this));
     }
@@ -59,7 +59,7 @@ public class Player {
         System.out.println("====================");
     }
 
-    public void processSpellSelectionInput(Entity damageTaker) {
+    public void processSpellSelectionInput(Scanner scanner,Entity damageTaker) {
         if (scanner.hasNextInt()) {
             int spellIndex = scanner.nextInt();
             magicSpells.get(spellIndex-1).executeMagicSpell(damageTaker, r);
@@ -69,7 +69,7 @@ public class Player {
     }
 
 
-    public boolean playerAttacksOtherEntity(Entity e, int attackOptionIndex) {
+    public boolean playerAttacksOtherEntity(Scanner scanner,Entity e, int attackOptionIndex) {
 
             if (attackOptionIndex == 1)  {
                 System.out.println("You attack a " + e.getEntityName() + ".");
@@ -96,7 +96,7 @@ public class Player {
             }
         if (attackOptionIndex == 2)  {
                 showAllSpellsAvailableForPlayer();
-                processSpellSelectionInput(e);
+                processSpellSelectionInput(scanner,e);
                 return e.checkForEntityDeath(this);
         }
 

@@ -17,6 +17,8 @@ import com.compScience.game.entities.plains.Slime;
 import com.compScience.game.entities.plains.Snake;
 import com.compScience.game.utils.items.Potion;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -41,7 +43,7 @@ public class AdventureGame {
     private boolean wizardFound = false;
 
     //Main Loop
-    public void startGame() {
+    public void startGame()  {
         //Over Attack Encounter Cycle
 
         //Simple Attack Cycle
@@ -58,8 +60,6 @@ public class AdventureGame {
             playerNotWantsToExit = processPlayerWanderingLoopInput();
         }
     }
-
-    //TODO: false input fix in every method
 
     //player wandering loop
     public void showPlayerWanderingLoopOptions() {
@@ -133,7 +133,7 @@ public class AdventureGame {
         }
     }
 
-    public boolean processPlayerWanderingLoopInput() {
+    public boolean processPlayerWanderingLoopInput()  {
         if (scanner.hasNextInt()) {
             int attackMenuInput = scanner.nextInt();
 
@@ -141,9 +141,11 @@ public class AdventureGame {
                 case 1: {
                     showDifferentExploreZonesMenu();
                     createNewRandomEntity(mapDifficultySelection, mapZoneSelection);
-                    showAttackLoopMenu();
-                    checkIfMerchantWasFound(mapZoneSelection, mapDifficultySelection);
-                    openMerchantShop();
+                    int playerDeathIndex = showAttackLoopMenu();
+                    if (playerDeathIndex == 1) {
+                        checkIfMerchantWasFound(mapZoneSelection, mapDifficultySelection);
+                        openMerchantShop();
+                    }
                     break;
                 }
                 case 2: {
@@ -161,8 +163,12 @@ public class AdventureGame {
                     processPlayerGoesResting(player);
                     break;
                 }
+                case 4: {
+                    readPlayerData();
+                    break;
+                }
                 case 5: {
-                    //Exit
+                    savePlayerData();
                     return false;
                 }
             }
@@ -170,6 +176,39 @@ public class AdventureGame {
             System.out.println("Use digits like '1'!");
         }
         return true;
+    }
+
+    //Player Save Data
+    public void savePlayerData() {
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream("C://Users//Tim//Desktop//saveData.dat");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(player);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //Player Read Data
+    public void readPlayerData() {
+        try {
+            FileInputStream fi = new FileInputStream("C://Users//Tim//Desktop//saveData.dat");
+            ObjectInputStream oi = new ObjectInputStream(fi);
+
+            player = (Player) oi.readObject();
+
+            oi.close();
+            fi.close();
+            System.out.println("=========================================");
+            System.out.println("Game Loaded!");
+            System.out.println("=========================================");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
     }
 
     //player resting
@@ -244,10 +283,12 @@ public class AdventureGame {
         if (alchemistFound) {
             Alchemist alchemist = new Alchemist("Old Alchemist", player);
             alchemist.showAlchemistInventory(player);
+            alchemistFound = false;
         }
         if (wizardFound) {
             Wizard wizard = new Wizard("Wise Wizard", player);
             wizard.showWizardInventory(player);
+            wizardFound = false;
         }
     }
 
@@ -542,12 +583,11 @@ public class AdventureGame {
     }
 
     public void processItemConsumeInput() {
-        if (scanner.hasNextInt()) {
-            int playerInventoryInput = scanner.nextInt();
-            InventorySelection(playerInventoryInput);
-        } else {
-            System.out.println("Use digits like '1'!");
-        }
+        ArrayList<Integer> possibleChoices = new ArrayList<Integer>();
+        possibleChoices.add(1);
+        possibleChoices.add(2);
+        int playerInventoryInput = checkForCorrectUserInputInMenus(possibleChoices);
+        InventorySelection(playerInventoryInput);
     }
 
     //Attacking loop stuff
@@ -588,7 +628,7 @@ public class AdventureGame {
 
             if (attackMenuInput == 1) {
                 int attackOptionsIndex = showDifferentAttackingOptionsForPlayer();
-                return player.playerAttacksOtherEntity(e, attackOptionsIndex);
+                return player.playerAttacksOtherEntity(scanner,e, attackOptionsIndex);
             }
             if (attackMenuInput == 2) {
                 //Inventory Menu Loop
@@ -608,7 +648,7 @@ public class AdventureGame {
     }
 
     //Attack cycle
-    public void showAttackLoopMenu() {
+    public int showAttackLoopMenu() {
         boolean isEnemyAlive = true;
         boolean isPlayerAlive = true;
 
@@ -618,13 +658,29 @@ public class AdventureGame {
              if (isEnemyAlive)
               isPlayerAlive = e.attackPlayer(player);
 
-             //TODO: reset boolean if player dies
              if (!isPlayerAlive) {
-                 wizardFound = false;
-                 blacksmithFound = false;
-                 alchemistFound = false;
+                 return 0;
              }
+        }
+        return 1;
+    }
 
+    public int checkForCorrectUserInputInMenus(ArrayList<Integer> possibleChoices) {
+        if (scanner.hasNextInt()) {
+            int userInput = scanner.nextInt();
+
+            if (possibleChoices.contains(userInput)) {
+                return userInput;
+            } else {
+                System.out.println("Use the options from above!");
+                return 9999;
+            }
+
+        } else {
+            System.out.println("Use digits like '1'!");
+            return 9999;
         }
     }
+
+    //TODO: Edit Menu Input in every Menu via Method
 }

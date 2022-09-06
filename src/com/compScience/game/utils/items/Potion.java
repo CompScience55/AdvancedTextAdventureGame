@@ -2,7 +2,9 @@ package com.compScience.game.utils.items;
 
 import com.compScience.game.entities.Player;
 
-public class Potion {
+import java.io.Serializable;
+
+public class Potion implements Serializable {
 
     private String name;
     private double howMuchCoinsWorth;
