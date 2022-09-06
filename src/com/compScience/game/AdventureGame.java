@@ -178,36 +178,63 @@ public class AdventureGame {
         return true;
     }
 
+    //Get Desktop path
+    public String getDesktopPath() {
+        String path = "";
+        try {
+        path = System.getProperty("user.home") + "//Desktop";
+        path.replace("\\", "//");
+    }catch (Exception e){
+        System.out.println("Exception caught ="+e.getMessage());
+    }
+        return path;
+    }
+
     //Player Save Data
     public void savePlayerData() {
 
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream("C://Users//Tim//Desktop//saveData.dat");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(player);
-        } catch (IOException e) {
-            e.printStackTrace();
+        String desktopPath = getDesktopPath();
+
+        if (!desktopPath.equals("")) {
+
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream( desktopPath+ "//saveData.dat");
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(player);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Something went wrong while saving!");
         }
     }
     //Player Read Data
     public void readPlayerData() {
-        try {
-            FileInputStream fi = new FileInputStream("C://Users//Tim//Desktop//saveData.dat");
-            ObjectInputStream oi = new ObjectInputStream(fi);
 
-            player = (Player) oi.readObject();
+        String desktopPath = getDesktopPath();
 
-            oi.close();
-            fi.close();
-            System.out.println("=========================================");
-            System.out.println("Game Loaded!");
-            System.out.println("=========================================");
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-        } catch (IOException e) {
-            System.out.println("Error initializing stream");
-        } catch (ClassNotFoundException classNotFoundException) {
-            classNotFoundException.printStackTrace();
+        if (!desktopPath.equals("")) {
+
+            try {
+                FileInputStream fi = new FileInputStream(desktopPath + "//saveData.dat");
+                ObjectInputStream oi = new ObjectInputStream(fi);
+
+                player = (Player) oi.readObject();
+
+                oi.close();
+                fi.close();
+                System.out.println("=========================================");
+                System.out.println("Game Loaded!");
+                System.out.println("=========================================");
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found");
+            } catch (IOException e) {
+                System.out.println("Error initializing stream");
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            }
+        } else {
+            System.out.println("Something went wrong while loading!");
         }
     }
 
