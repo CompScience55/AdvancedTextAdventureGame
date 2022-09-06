@@ -2,6 +2,7 @@ package com.compScience.game.entities.npcs;
 
 import com.compScience.game.entities.Player;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Wizard extends NPC{
@@ -65,7 +66,6 @@ public class Wizard extends NPC{
             if (input < 3 && input > 0) {
 
                 switch (input) {
-                    //TODO: Fix upgrade apply thingy
                     case 1: {
                         System.out.println("Wizard: Which spell do you want to upgrade?");
                         System.out.println("====================");
@@ -76,18 +76,18 @@ public class Wizard extends NPC{
                         }
                         System.out.println("====================");
 
-                        if (scanner.hasNextInt()) {
-                            int spellInput = scanner.nextInt()-1;
-                            if (spellInput > 0 && spellInput < player.getMagicSpells().size()) {
-                                double spellUpgradeCost = player.getMagicSpells().get(spellInput).getSpellUpgradeCost();
-                                if (spellUpgradeCost <= player.getMoneyCounter()) {
-                                    player.getMagicSpells().get(spellInput).upgradeSpell();
-                                    System.out.println("You read the scroll and increase your spell ability.");
-                                    player.setMoneyCounter(player.getMoneyCounter() - spellUpgradeCost);
-                                } else {
-                                    System.out.println("Give me back my scroll and screw you!");
-                                }
-                            }
+                        ArrayList<Integer> possibleChoices = new ArrayList<Integer>();
+                        possibleChoices.add(1);
+                        int spellInput = checkForCorrectUserInputInMenus(possibleChoices);
+
+                        double spellUpgradeCost = player.getMagicSpells().get(spellInput-1).getSpellUpgradeCost();
+                        if (spellUpgradeCost <= player.getMoneyCounter()) {
+                            player.getMagicSpells().get(spellInput-1).upgradeSpell();
+                            System.out.println("You read the scroll and increase your spell ability.");
+                            player.setMoneyCounter(player.getMoneyCounter() - spellUpgradeCost);
+                        } else {
+                            System.out.println("Wizard: You don't have enough coins.");
+                            System.out.println("Wizard: Give me back my scroll and screw you!");
                         }
                         break;
                     }
@@ -104,5 +104,22 @@ public class Wizard extends NPC{
             System.out.println("Use digits like '1'!");
         }
         return false;
+    }
+
+    public int checkForCorrectUserInputInMenus(ArrayList<Integer> possibleChoices) {
+        if (scanner.hasNextInt()) {
+            int userInput = scanner.nextInt();
+
+            if (possibleChoices.contains(userInput)) {
+                return userInput;
+            } else {
+                System.out.println("Use the options from above!");
+                return 9999;
+            }
+
+        } else {
+            System.out.println("Use digits like '1'!");
+            return 9999;
+        }
     }
 }

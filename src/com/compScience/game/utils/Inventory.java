@@ -3,9 +3,10 @@ package com.compScience.game.utils;
 import com.compScience.game.entities.Player;
 import com.compScience.game.utils.items.Potion;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Inventory {
+public class Inventory implements Serializable {
 
     //Inventory HashMap
     private ArrayList<Item> itemInInventory = new ArrayList<>();
