@@ -123,6 +123,7 @@ public class Player implements Serializable {
             System.out.println("You'll lose half of your coins!");
             moneyCounter /= 2;
             healthPoints = playerLevelHealthPoints;
+            manaPoints = playerLevelManaPoints;
             return false;
         }
         return true;

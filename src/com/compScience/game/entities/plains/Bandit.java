@@ -7,7 +7,7 @@ public class Bandit extends Entity {
     private final double customXPAmount;
 
     public Bandit(int level, double customMoneyDropAmount) {
-        super("Bandit", 5 + 2*level, 8 + 2 * level, level, customMoneyDropAmount);
+       super("Bandit", 5 + 2*level, 8 + 2 * level, level, customMoneyDropAmount);
         this.customXPAmount = level*3;
     }
 }

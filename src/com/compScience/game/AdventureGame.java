@@ -272,7 +272,7 @@ public class AdventureGame {
             difficultyMerchantChanceBoundary = 90;
         }
         if (mapDifficultySelection == 3) {
-            difficultyMerchantChanceBoundary = 90;
+            difficultyMerchantChanceBoundary = 90; //TODO: Reset values
         }
         if (mapDifficultySelection == 3) {
             difficultyMerchantChanceBoundary = 25;

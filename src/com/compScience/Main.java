@@ -2,7 +2,6 @@ package com.compScience;
 
 import com.compScience.game.AdventureGame;
 
-import java.io.IOException;
 
 public class Main {
 

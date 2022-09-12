@@ -25,6 +25,7 @@ public class Wizard extends NPC{
             System.out.println("2: No");
 
             boolean correctInput = true;
+
             while (correctInput) {
                 if (scanner.hasNextInt()) {
                     correctInput = false;
