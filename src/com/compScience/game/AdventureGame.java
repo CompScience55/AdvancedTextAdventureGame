@@ -33,6 +33,8 @@ public class AdventureGame {
     //Util stuff
     Random r = new Random();
 
+    boolean isInFight = false;
+
     //Map stuff
     private int mapDifficultySelection;
     private int mapZoneSelection;
@@ -139,6 +141,7 @@ public class AdventureGame {
 
             switch (attackMenuInput) {
                 case 1: {
+                    isInFight = true;
                     showDifferentExploreZonesMenu();
                     createNewRandomEntity(mapDifficultySelection, mapZoneSelection);
                     int playerDeathIndex = showAttackLoopMenu();
@@ -596,7 +599,13 @@ public class AdventureGame {
 
                     if (itemIndex != 9999) {
                         Potion consumingPotion = player.getPlayerInventory().getPotionInInventory().get(itemIndex);
-                        consumingPotion.consumePotion(consumingPotion, player);
+                        switch (consumingPotion.getPotionIdentifier()){
+                            case 1: consumingPotion.consumePotion(consumingPotion, player);
+                            break;
+                            case 2: consumingPotion.consumePotionDealingDamage(e, consumingPotion, this);
+                            break;
+                        }
+
 
                         if (consumingPotion.getPotionAmount() == 0) {
                             player.getPlayerInventory().getPotionInInventory().remove(itemIndex);
@@ -655,7 +664,7 @@ public class AdventureGame {
 
             if (attackMenuInput == 1) {
                 int attackOptionsIndex = showDifferentAttackingOptionsForPlayer();
-                return player.playerAttacksOtherEntity(scanner,e, attackOptionsIndex);
+                return player.playerAttacksOtherEntity(scanner,e, attackOptionsIndex, this);
             }
             if (attackMenuInput == 2) {
                 //Inventory Menu Loop
@@ -683,7 +692,7 @@ public class AdventureGame {
             showAttackMenuOptions();
              isEnemyAlive = processPlayerMenuInput();
              if (isEnemyAlive)
-              isPlayerAlive = e.attackPlayer(player);
+              isPlayerAlive = e.attackPlayer(player, this);
 
              if (!isPlayerAlive) {
                  return 0;
@@ -707,6 +716,14 @@ public class AdventureGame {
             System.out.println("Use digits like '1'!");
             return 9999;
         }
+    }
+
+    public boolean isInFight() {
+        return isInFight;
+    }
+
+    public void setInFight(boolean inFight) {
+        isInFight = inFight;
     }
 
     //TODO: Edit Menu Input in every Menu via Method

@@ -17,7 +17,8 @@ public class Inventory implements Serializable {
 
     public Inventory(Player player) {
         this.inventoryOwner = player;
-        potionInInventory.add(new Potion("Potion of Healing", 10, 3, 1, inventoryOwner));
+        potionInInventory.add(new Potion("Potion of Healing", 10, 3, 1, inventoryOwner, 1));
+        potionInInventory.add(new Potion("Fire Potion", 20, 2, 1, inventoryOwner, 2));
     }
 
 

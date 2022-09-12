@@ -1,5 +1,6 @@
 package com.compScience.game.entities;
 
+import com.compScience.game.AdventureGame;
 import com.compScience.game.utils.Inventory;
 import com.compScience.game.utils.MagicSpell;
 
@@ -69,7 +70,7 @@ public class Player implements Serializable {
     }
 
 
-    public boolean playerAttacksOtherEntity(Scanner scanner,Entity e, int attackOptionIndex) {
+    public boolean playerAttacksOtherEntity(Scanner scanner,Entity e, int attackOptionIndex, AdventureGame game) {
 
             if (attackOptionIndex == 1)  {
                 System.out.println("You attack a " + e.getEntityName() + ".");
@@ -85,19 +86,19 @@ public class Player implements Serializable {
                     if (randomCriticalChanceIndex <= 10) {
                         System.out.println("CRITICAL HIT! You dealt " + damagePoints*1.5 + " HP damage by punching your enemy.");
                         e.setHealthPoints(e.getHealthPoints() - damagePoints*1.5);
-                        return e.checkForEntityDeath(this);
+                        return e.checkForEntityDeath(this, game);
                     } else {
                         //Normal Hit
                         System.out.println("You dealt " + damagePoints + " HP damage by punching your enemy.");
                         e.setHealthPoints(e.getHealthPoints() - damagePoints);
-                        return e.checkForEntityDeath(this);
+                        return e.checkForEntityDeath(this, game);
                     }
                 }
             }
         if (attackOptionIndex == 2)  {
                 showAllSpellsAvailableForPlayer();
                 processSpellSelectionInput(scanner,e);
-                return e.checkForEntityDeath(this);
+                return e.checkForEntityDeath(this, game);
         }
 
         return true;
@@ -116,7 +117,7 @@ public class Player implements Serializable {
         }
     }
 
-    public boolean checkForPlayerDeath() {
+    public boolean checkForPlayerDeath(AdventureGame game) {
         if (healthPoints <= 0) {
             System.out.println("====================");
             System.out.println("You died in combat!");
@@ -124,6 +125,7 @@ public class Player implements Serializable {
             moneyCounter /= 2;
             healthPoints = playerLevelHealthPoints;
             manaPoints = playerLevelManaPoints;
+            game.setInFight(false);
             return false;
         }
         return true;

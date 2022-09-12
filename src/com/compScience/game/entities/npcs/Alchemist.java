@@ -51,7 +51,9 @@ public class Alchemist extends NPC{
         System.out.println("2: [LVL 3] Potion of Healing | Cost: 30");
         System.out.println("3: [LVL 1] Mana Potion | Cost: 15");
         System.out.println("4: [LVL 3] Mana Potion | Cost: 35");
-        System.out.println("5: Exit");
+        System.out.println("5: [LVL 1] Fire Potion | Cost: 20");
+        System.out.println("6: [LVL 3] Fire Potion | Cost: 40");
+        System.out.println("7: Exit");
     }
 
     public boolean processPotionInventory(Player player) {
@@ -64,11 +66,11 @@ public class Alchemist extends NPC{
         if (scanner.hasNextInt()) {
             int input = scanner.nextInt();
 
-            if (input < 6 && input > 0) {
+            if (input < 8 && input > 0) {
 
                 switch (input) {
                     case 1: {
-                        Potion potion = new Potion("Potion of Healing", 10, 1, 1, player);
+                        Potion potion = new Potion("Potion of Healing", 10, 1, 1, player, 1);
                         boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
                         if (hasEnoughCoins) {
                             addPotionToPlayersInventory(player, potion);
@@ -79,7 +81,7 @@ public class Alchemist extends NPC{
                         break;
                     }
                     case 2: {
-                        Potion potion = new Potion("Potion of Healing", 30, 1, 3, player);
+                        Potion potion = new Potion("Potion of Healing", 30, 1, 3, player, 1);
                         boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
                         if (hasEnoughCoins) {
                             addPotionToPlayersInventory(player, potion);
@@ -90,7 +92,7 @@ public class Alchemist extends NPC{
                         break;
                     }
                     case 3: {
-                        Potion potion = new Potion("Mana Potion", 15, 1, 1, player);
+                        Potion potion = new Potion("Mana Potion", 15, 1, 1, player, 1);
                         boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
                         if (hasEnoughCoins) {
                             addPotionToPlayersInventory(player, potion);
@@ -101,11 +103,33 @@ public class Alchemist extends NPC{
                         break;
                     }
                     case 4: {
-                        Potion potion = new Potion("Mana Potion", 35, 1, 3, player);
+                        Potion potion = new Potion("Mana Potion", 35, 1, 3, player, 1);
                         boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
                         if (hasEnoughCoins) {
                             addPotionToPlayersInventory(player, potion);
                             System.out.println("You bought a [LVL 3] Mana Potion for 35 coins!");
+                        } else {
+                            System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
+                        }
+                        break;
+                    }
+                    case 5: {
+                        Potion potion = new Potion("Fire Potion", 20, 1, 1, player, 2);
+                        boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
+                        if (hasEnoughCoins) {
+                            addPotionToPlayersInventory(player, potion);
+                            System.out.println("You bought a [LVL 1] Fire Potion for 20 coins!");
+                        } else {
+                            System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
+                        }
+                        break;
+                    }
+                    case 6: {
+                        Potion potion = new Potion("Fire Potion", 40, 1, 3, player, 2);
+                        boolean hasEnoughCoins = editPlayersMoneyAfterTransaction(player, potion);
+                        if (hasEnoughCoins) {
+                            addPotionToPlayersInventory(player, potion);
+                            System.out.println("You bought a [LVL 3] Fire Potion for 40 coins!");
                         } else {
                             System.out.println("Alchemist: Hmmm, seems like you're not worthy of my craft.");
                         }
@@ -116,7 +140,7 @@ public class Alchemist extends NPC{
             } else {
                 System.out.println("Use the options above!");
             }
-            if (5 == input) {
+            if (7 == input) {
                 return false;
             }
         } else {
@@ -134,14 +158,12 @@ public class Alchemist extends NPC{
             if (player.getPlayerInventory().getPotionInInventory().get(i).getName().equals(potion.getName()) && player.getPlayerInventory().getPotionInInventory().get(i).getPotionLevel() == potion.getPotionLevel()) {
                 potionNotInsideArray = 2;
                 player.getPlayerInventory().getPotionInInventory().get(i).setPotionAmount(player.getPlayerInventory().getPotionInInventory().get(i).getPotionAmount() + 1);
-                System.out.println("Potion number added Test");
                 break;
             }
         }
 
         if (potionNotInsideArray == 1) {
             player.getPlayerInventory().getPotionInInventory().add(potion);
-            System.out.println("Potion added Test");
         }
     }
 

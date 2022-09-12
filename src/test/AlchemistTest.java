@@ -15,7 +15,7 @@ class AlchemistTest {
         player.createNewPlayerObject();
 
 
-        Potion potion2 = new Potion("Potion of Healing", 10, 4, 1, player);
+        Potion potion2 = new Potion("Potion of Healing", 10, 4, 1, player, 1);
 
         int expectedValue = player.getPlayerInventory().getPotionInInventory().get(0).getPotionAmount() + 1;
 
@@ -32,7 +32,7 @@ class AlchemistTest {
         Player player = new Player();
         player.createNewPlayerObject();
 
-        Potion potion = new Potion("Potion of Healing", 5, 1, 1, player);
+        Potion potion = new Potion("Potion of Healing", 5, 1, 1, player, 1);
 
         Alchemist alchemist = new Alchemist("Old Alchemist", player);
 

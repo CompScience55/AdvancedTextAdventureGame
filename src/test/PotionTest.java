@@ -12,7 +12,7 @@ class PotionTest {
     void playerHealthAfterPlayerUsesPotionRight() {
         Player player = new Player();
         player.createNewPlayerObject();
-        Potion potion = new Potion("Potion of Healing", 10, 1, 1, player);
+        Potion potion = new Potion("Potion of Healing", 10, 1, 1, player, 1);
         double expectedValueOfPlayerHealth = player.getHealthPoints() + potion.getRefillAmount();
         potion.consumePotion(potion,player);
         assertEquals(expectedValueOfPlayerHealth, player.getHealthPoints());

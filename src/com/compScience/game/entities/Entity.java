@@ -1,5 +1,7 @@
 package com.compScience.game.entities;
 
+import com.compScience.game.AdventureGame;
+
 import java.util.Random;
 
 public class Entity {
@@ -26,7 +28,7 @@ public class Entity {
         this.customXPAmount = entityLevel * 1.25;
     }
 
-    public boolean checkForEntityDeath(Player player) {
+    public boolean checkForEntityDeath(Player player, AdventureGame game) {
         if (healthPoints <= 0) {
             System.out.println("====================");
             System.out.println("You slayed a " + getEntityName() + ".");
@@ -35,12 +37,13 @@ public class Entity {
             player.setMoneyCounter(player.getMoneyCounter() + customMoneyDropAmount);
             player.setCurrentXpProgressionCounter(player.getCurrentXpProgressionCounter() + customXPAmount);
             player.checkForLevelUp();
+            game.setInFight(false);
             return false;
         }
         return true;
     }
 
-    public boolean attackPlayer(Player p) {
+    public boolean attackPlayer(Player p, AdventureGame game) {
         System.out.println("You get attacked by the " + this.getEntityName() + ".");
         int randomHitChanceIndex = r.nextInt(100)+1;
 
@@ -50,7 +53,7 @@ public class Entity {
         } else {
             System.out.println("You took " + this.getDamagePoints() + " HP damage from the attack.");
             p.setHealthPoints(p.getHealthPoints() - this.getDamagePoints());
-            return p.checkForPlayerDeath();
+            return p.checkForPlayerDeath(game);
         }
     }
 
