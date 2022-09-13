@@ -62,7 +62,7 @@ public class Potion implements Serializable {
     }
 
     public void consumePotionDealingDamage(Entity entity, Potion potion, AdventureGame game){
-        if (game.isInFight() == true) {
+        if (game.isInFight()) {
             switch (potion.getName()) {
                 case "Fire Potion": {
                     entity.setHealthPoints(entity.getHealthPoints() - 4 * potion.getPotionLevel());
