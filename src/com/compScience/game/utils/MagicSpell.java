@@ -11,15 +11,19 @@ public class MagicSpell implements Serializable {
     private String name;
     private int manaCost;
     private double dealingDamage;
-    private double spellUpgradeCost = 25;
+    private double spellUpgradeCost;
+
+    private double spellBuyCost;
 
     private Player owner;
 
-    public MagicSpell(String name, int manaCost, double dealingDamage, Player owner) {
+    public MagicSpell(String name, int manaCost, double dealingDamage, Player owner, double upgradeCost, double buyCost) {
         this.dealingDamage = dealingDamage;
         this.name = name;
         this.manaCost = manaCost;
         this.owner = owner;
+        this.spellUpgradeCost = upgradeCost;
+        this.spellBuyCost = buyCost;
     }
 
     public void executeMagicSpell(Entity damageTaker, Random random) {
@@ -54,5 +58,9 @@ public class MagicSpell implements Serializable {
 
     public double getSpellUpgradeCost() {
         return spellUpgradeCost;
+    }
+
+    public double getSpellBuyCost() {
+        return spellBuyCost;
     }
 }

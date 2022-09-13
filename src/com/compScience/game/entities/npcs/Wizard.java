@@ -94,22 +94,18 @@ public class Wizard extends NPC{
                         break;
                     }
                     case 2: {
-                        /*
-                        MagicSpell rockSpell = new MagicSpell("Rock", 35, 18, player);
+                        MagicSpell rockSpell = new MagicSpell("Rock", 35, 18, player, 30, 30);
                         System.out.println("Wizard: A Rock Spell? Good Choice!");
-                        if (spellUpgradeCost <= player.getMoneyCounter()) {
-                            player.getMagicSpells().get(spellInput-1).upgradeSpell();
-                            System.out.println("You read the scroll and increase your spell ability.");
-                            player.setMoneyCounter(player.getMoneyCounter() - spellUpgradeCost);
+                        if (rockSpell.getSpellBuyCost() <= player.getMoneyCounter()) {
+                            player.getMagicSpells().get(1).upgradeSpell();
+                            System.out.println("You read the scroll and learned the Rock Spell!");
+                            player.setMoneyCounter(player.getMoneyCounter() - rockSpell.getSpellBuyCost());
                         } else {
                             System.out.println("Wizard: You don't have enough coins.");
                             System.out.println("Wizard: Give me back my scroll and screw you!");
                         }
                         break;
-                        
-                         */
                     }
-
                 }
 
             } else {
