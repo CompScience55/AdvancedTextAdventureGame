@@ -45,7 +45,7 @@ public class Player implements Serializable {
         playerLevelHealthPoints = healthPoints;
         playerLevelManaPoints = manaPoints;
         this.playerInventory = new Inventory(this);
-        this.moneyCounter = 50;
+        this.moneyCounter = 30;
         //Starting Spell
         magicSpells.add(new MagicSpell("Fire", 20, 12, this));
     }
