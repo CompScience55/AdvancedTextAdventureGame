@@ -1,6 +1,7 @@
 package com.compScience.game.entities.npcs;
 
 import com.compScience.game.entities.Player;
+import com.compScience.game.utils.MagicSpell;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -50,8 +51,8 @@ public class Wizard extends NPC{
 
     public void showSpellShopOptions() {
         System.out.println("1: Upgrade Spell Scroll");
-        //Other Spells
-        System.out.println("2: Exit");
+        System.out.println("2: Buy Rock Spell Scroll");
+        System.out.println("3: Exit");
     }
 
     public boolean processSpellInventory(Player player) {
@@ -64,7 +65,7 @@ public class Wizard extends NPC{
         if (scanner.hasNextInt()) {
             int input = scanner.nextInt();
 
-            if (input < 3 && input > 0) {
+            if (input <= 3 && input > 0) {
 
                 switch (input) {
                     case 1: {
@@ -91,6 +92,22 @@ public class Wizard extends NPC{
                             System.out.println("Wizard: Give me back my scroll and screw you!");
                         }
                         break;
+                    }
+                    case 2: {
+                        /*
+                        MagicSpell rockSpell = new MagicSpell("Rock", 35, 18, player);
+                        System.out.println("Wizard: A Rock Spell? Good Choice!");
+                        if (spellUpgradeCost <= player.getMoneyCounter()) {
+                            player.getMagicSpells().get(spellInput-1).upgradeSpell();
+                            System.out.println("You read the scroll and increase your spell ability.");
+                            player.setMoneyCounter(player.getMoneyCounter() - spellUpgradeCost);
+                        } else {
+                            System.out.println("Wizard: You don't have enough coins.");
+                            System.out.println("Wizard: Give me back my scroll and screw you!");
+                        }
+                        break;
+                        
+                         */
                     }
 
                 }
