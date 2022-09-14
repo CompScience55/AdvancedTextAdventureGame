@@ -274,36 +274,50 @@ public class AdventureGame {
         if (mapDifficultySelection == 1) {
             difficultyMerchantChanceBoundary = 90;
         }
-        if (mapDifficultySelection == 3) {
+        if (mapDifficultySelection == 2) {
             difficultyMerchantChanceBoundary = 90; //TODO: Reset values
         }
         if (mapDifficultySelection == 3) {
             difficultyMerchantChanceBoundary = 25;
         }
+        doZoneSpecificMerchantCheck(mapZoneSelection, difficultyMerchantChanceBoundary);
+    }
 
-
+    //Zone Selection
+    public void doZoneSpecificMerchantCheck(int mapZoneIndex, int difficultyMerchantChanceBoundary) {
         switch (mapZoneSelection) {
             case 1: {
-                int randomIndex = r.nextInt(100)+1;
-                if (randomIndex <= difficultyMerchantChanceBoundary) {
-                    alchemistFound = true;
-                }
+                generateRandomIndexForAlchemist(difficultyMerchantChanceBoundary);
                 break;
             }
             case 2: {
-                int randomIndex = r.nextInt(100)+1;
-                if (randomIndex <= difficultyMerchantChanceBoundary) {
-                    wizardFound = true;
-                }
+                generateRandomIndexForWizard(difficultyMerchantChanceBoundary);
                 break;
             }
             case 3: {
-                int randomIndex = r.nextInt(100)+1;
-                if (randomIndex <= difficultyMerchantChanceBoundary) {
-                    blacksmithFound = true;
-                }
+                generateRandomIndexForBlacksmith(difficultyMerchantChanceBoundary);
                 break;
             }
+        }
+    }
+
+    //merchant boolean methods
+    public void generateRandomIndexForBlacksmith(int boundary) {
+        int randomIndex = r.nextInt(100)+1;
+        if (randomIndex <= boundary) {
+            blacksmithFound = true;
+        }
+    }
+    public void generateRandomIndexForWizard(int boundary) {
+        int randomIndex = r.nextInt(100)+1;
+        if (randomIndex <= boundary) {
+            wizardFound = true;
+        }
+    }
+    public void generateRandomIndexForAlchemist(int boundary) {
+        int randomIndex = r.nextInt(100)+1;
+        if (randomIndex <= boundary) {
+            alchemistFound = true;
         }
     }
 
