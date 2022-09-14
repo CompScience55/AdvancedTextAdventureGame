@@ -97,7 +97,7 @@ public class Wizard extends NPC{
                         MagicSpell rockSpell = new MagicSpell("Rock", 35, 18, player, 30, 30);
                         System.out.println("Wizard: A Rock Spell? Good Choice!");
                         if (rockSpell.getSpellBuyCost() <= player.getMoneyCounter()) {
-                            player.getMagicSpells().get(1).upgradeSpell();
+                            player.getMagicSpells().add(rockSpell);
                             System.out.println("You read the scroll and learned the Rock Spell!");
                             player.setMoneyCounter(player.getMoneyCounter() - rockSpell.getSpellBuyCost());
                         } else {

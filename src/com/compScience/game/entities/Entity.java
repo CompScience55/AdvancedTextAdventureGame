@@ -57,13 +57,6 @@ public class Entity {
         }
     }
 
-    public void showAllEntityStats() {
-        System.out.println("-----------------");
-        System.out.println("Stats:");
-        System.out.println("HP: " + healthPoints);
-        System.out.println("CustomXPAmount: " + customXPAmount);
-    }
-
     public String getEntityName() {
         return " LVL [" + entityLevel + "] " + entityName;
     }

@@ -69,40 +69,45 @@ public class Player implements Serializable {
         }
     }
 
-
     public boolean playerAttacksOtherEntity(Scanner scanner,Entity e, int attackOptionIndex, AdventureGame game) {
+        return handleAttackOptionsInput(attackOptionIndex, e, game, scanner);
+    }
+    public boolean handleAttackOptionsInput(int index, Entity e, AdventureGame game, Scanner scanner) {
+        if (index == 1)  {
+            System.out.println("You attack a " + e.getEntityName() + ".");
+            int randomHitChanceIndex = r.nextInt(100) + 1;
+            int randomCriticalChanceIndex = r.nextInt(100)+1;
 
-            if (attackOptionIndex == 1)  {
-                System.out.println("You attack a " + e.getEntityName() + ".");
-                int randomHitChanceIndex = r.nextInt(100) + 1;
-                int randomCriticalChanceIndex = r.nextInt(100)+1;
-
-                //Hit missed
-                if (randomHitChanceIndex <= 15) {
-                    System.out.println("Your hit was blocked by your enemy!");
-                    return true;
-                } else {
-                    //Critical Hit
-                    if (randomCriticalChanceIndex <= 10) {
-                        System.out.println("CRITICAL HIT! You dealt " + damagePoints*1.5 + " HP damage by punching your enemy.");
-                        e.setHealthPoints(e.getHealthPoints() - damagePoints*1.5);
-                        return e.checkForEntityDeath(this, game);
-                    } else {
-                        //Normal Hit
-                        System.out.println("You dealt " + damagePoints + " HP damage by punching your enemy.");
-                        e.setHealthPoints(e.getHealthPoints() - damagePoints);
-                        return e.checkForEntityDeath(this, game);
-                    }
-                }
+            //Hit missed
+            if (randomHitChanceIndex <= 15) {
+                System.out.println("Your hit was blocked by your enemy!");
+                return true;
+            } else {
+                checkForHitType(randomCriticalChanceIndex, game, e);
             }
-        if (attackOptionIndex == 2)  {
-                showAllSpellsAvailableForPlayer();
-                processSpellSelectionInput(scanner,e);
-                return e.checkForEntityDeath(this, game);
         }
-
+        else  {
+            showAllSpellsAvailableForPlayer();
+            processSpellSelectionInput(scanner,e);
+            return e.checkForEntityDeath(this, game);
+        }
         return true;
     }
+    public boolean checkForHitType(int hitIndex, AdventureGame game, Entity e) {
+
+        //Critical Hit
+        if (hitIndex <= 10) {
+            System.out.println("CRITICAL HIT! You dealt " + damagePoints*1.5 + " HP damage by punching your enemy.");
+            e.setHealthPoints(e.getHealthPoints() - damagePoints*1.5);
+            return e.checkForEntityDeath(this, game);
+        } else {
+            //Normal Hit
+            System.out.println("You dealt " + damagePoints + " HP damage by punching your enemy.");
+            e.setHealthPoints(e.getHealthPoints() - damagePoints);
+            return e.checkForEntityDeath(this, game);
+        }
+    }
+
 
     public void checkForLevelUp() {
         if (currentXpProgressionCounter >= xpBorder) {
@@ -132,7 +137,6 @@ public class Player implements Serializable {
     }
 
     //Getter & Setter
-
 
     public double getMoneyCounter() {
         return moneyCounter;
