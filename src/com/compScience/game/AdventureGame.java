@@ -90,19 +90,23 @@ public class AdventureGame {
             int playerMenuInput = scanner.nextInt();
 
             if (playerMenuInput == 1 || playerMenuInput == 2 || playerMenuInput == 3 ) {
-                switch (playerMenuInput) {
-                    case 1: mapDifficultySelection = 1;
-                    break;
-                    case 2: mapDifficultySelection = 2;
-                    break;
-                    case 3: mapDifficultySelection = 3;
-                    break;
-                }
+                handlePlayerMenuInputForMapDifficulty(playerMenuInput);
             } else {
                 System.out.println("Use the options above!");
             }
         } else {
             System.out.println("Use digits like '1'!");
+        }
+    }
+
+    public void handlePlayerMenuInputForMapDifficulty(int input) {
+        switch (input) {
+            case 1: mapDifficultySelection = 1;
+                break;
+            case 2: mapDifficultySelection = 2;
+                break;
+            case 3: mapDifficultySelection = 3;
+                break;
         }
     }
 
@@ -118,15 +122,7 @@ public class AdventureGame {
             int playerMenuInput = scanner.nextInt();
             if (playerMenuInput == 1 || playerMenuInput == 2 || playerMenuInput == 3 ) {
             //Decides where the player goes and what difficulty he will receive
-            switch (playerMenuInput) {
-                case 1: mapZoneSelection = 1;
-                break;
-                case 2: mapZoneSelection = 2;
-                break;
-                case 3: mapZoneSelection = 3;
-                break;
-            }
-            showZoneDifficultySelectionMenu();
+            handlePlayerMenuInputForMapZone(playerMenuInput);
             } else {
                 System.out.println("Use the options above!");
             }
@@ -135,26 +131,30 @@ public class AdventureGame {
         }
     }
 
+    public void handlePlayerMenuInputForMapZone(int input) {
+        switch (input) {
+            case 1: mapZoneSelection = 1;
+                break;
+            case 2: mapZoneSelection = 2;
+                break;
+            case 3: mapZoneSelection = 3;
+                break;
+        }
+        showZoneDifficultySelectionMenu();
+    }
+
     public boolean processPlayerWanderingLoopInput()  {
         if (scanner.hasNextInt()) {
             int attackMenuInput = scanner.nextInt();
 
             switch (attackMenuInput) {
                 case 1: {
-                    isInFight = true;
-                    showDifferentExploreZonesMenu();
-                    createNewRandomEntity(mapDifficultySelection, mapZoneSelection);
-                    int playerDeathIndex = showAttackLoopMenu();
-                    if (playerDeathIndex == 1) {
-                        checkIfMerchantWasFound(mapZoneSelection, mapDifficultySelection);
-                        openMerchantShop();
-                    }
+                    handleAttackProcedure();
                     break;
                 }
                 case 2: {
                     //Inventory Menu Loop
                     boolean playerWantsToExitInventory = true;
-
                     while (playerWantsToExitInventory) {
                         showInventoryMenuOptions();
                         playerWantsToExitInventory = processPlayerInventoryMenuInput();
@@ -179,6 +179,16 @@ public class AdventureGame {
             System.out.println("Use digits like '1'!");
         }
         return true;
+    }
+    public void handleAttackProcedure() {
+        isInFight = true;
+        showDifferentExploreZonesMenu();
+        createNewRandomEntity(mapDifficultySelection, mapZoneSelection);
+        int playerDeathIndex = showAttackLoopMenu();
+        if (playerDeathIndex == 1) {
+            checkIfMerchantWasFound(mapZoneSelection, mapDifficultySelection);
+            openMerchantShop();
+        }
     }
 
     //Get Desktop path
@@ -252,36 +262,40 @@ public class AdventureGame {
             int menuInput = scanner.nextInt();
 
             if (menuInput == 1) {
-                if (player.getMoneyCounter() >= 10) {
-                    player.setMoneyCounter(player.getMoneyCounter() - 10);
-                    System.out.println("You stayed a night. Your stats have been refilled!");
-                    player.setHealthPoints(player.getPlayerLevelHealthPoints());
-                    player.setManaPoints(player.getPlayerLevelManaPoints());
-                } else {
-                    System.out.println("You don't have enough coins to rest.");
-                }
+                checkForEnoughCoinsForResting();
             }
         } else {
             System.out.println("Use digits like '1'!");
         }
 
     }
+    public void checkForEnoughCoinsForResting() {
+        if (player.getMoneyCounter() >= 10) {
+            player.setMoneyCounter(player.getMoneyCounter() - 10);
+            System.out.println("You stayed a night. Your stats have been refilled!");
+            player.setHealthPoints(player.getPlayerLevelHealthPoints());
+            player.setManaPoints(player.getPlayerLevelManaPoints());
+        } else {
+            System.out.println("You don't have enough coins to rest.");
+        }
+    }
 
     //merchant found
     public void checkIfMerchantWasFound(int mapZoneSelection, int mapDifficultySelection) {
-        int difficultyMerchantChanceBoundary = 0;
-
-        if (mapDifficultySelection == 1) {
-            difficultyMerchantChanceBoundary = 90;
-        }
-        if (mapDifficultySelection == 2) {
-            difficultyMerchantChanceBoundary = 90; //TODO: Reset values
-        }
-        if (mapDifficultySelection == 3) {
-            difficultyMerchantChanceBoundary = 25;
-        }
+        int difficultyMerchantChanceBoundary = setMerchantSpawnChanceBoundary(mapDifficultySelection);
         doZoneSpecificMerchantCheck(mapZoneSelection, difficultyMerchantChanceBoundary);
     }
+    public int setMerchantSpawnChanceBoundary(int mapDifficultySelection) {
+        if (mapDifficultySelection == 1) {
+            return 90;
+        }
+        if (mapDifficultySelection == 2) {
+            return 90; //TODO: Reset values
+        } else {
+            return 25;
+        }
+    }
+
 
     //Zone Selection
     public void doZoneSpecificMerchantCheck(int mapZoneIndex, int difficultyMerchantChanceBoundary) {
@@ -345,214 +359,148 @@ public class AdventureGame {
         switch (mapZoneSelection) {
             case 1: {
                 //Plains
-                switch (mapDifficultySelection) {
-                    //The Edge
-                    case 1: {
-                        int randomEntityLevel = r.nextInt(4)+1;
-                        //Entity type selection
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Slime(randomEntityLevel, 0.2* randomEntityLevel);
-                                break;
-                            }
-                            case 2: {
-                                e = new Bandit(randomEntityLevel, 0.6 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Snake(randomEntityLevel, 0.75 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new EarthGolem(randomEntityLevel, 1.2 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                    //Crossing
-                    case 2: {
-                        int randomEntityLevel = r.nextInt(6)+4;
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Slime(randomEntityLevel, 0.2* randomEntityLevel);
-                                break;
-                            }
-                            case 2: {
-                                e = new Bandit(randomEntityLevel, 0.6 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Snake(randomEntityLevel, 0.75 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new EarthGolem(randomEntityLevel, 1.2 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                    //Deep
-                    case 3: {
-                        int randomEntityLevel = r.nextInt(6)+9;
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Slime(randomEntityLevel, 0.2* randomEntityLevel);
-                                break;
-                            }
-                            case 2: {
-                                e = new Bandit(randomEntityLevel, 0.6 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Snake(randomEntityLevel, 0.75 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new EarthGolem(randomEntityLevel, 1.2 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                }
+                doEntityDifficultySelectionForPlains(newEntityIndex, mapDifficultySelection);
                 break;
             }
             case 2: {
-                switch (mapDifficultySelection) {
-                    //The Edge
-                    case 1: {
-                        int randomEntityLevel = r.nextInt(4)+1;
-                        //Entity type selection
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Wolf(randomEntityLevel, randomEntityLevel * 0.6);
-                                break;
-                            }
-                            case 2: {
-                                e = new Zombie(randomEntityLevel, 0.75 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Spider(randomEntityLevel, 0.25 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new Bear(randomEntityLevel, 0.85 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                    //Crossing
-                    case 2: {
-                        int randomEntityLevel = r.nextInt(6)+4;
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Wolf(randomEntityLevel, randomEntityLevel * 0.6);
-                                break;
-                            }
-                            case 2: {
-                                e = new Zombie(randomEntityLevel, 0.75 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Spider(randomEntityLevel, 0.25 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new Bear(randomEntityLevel, 0.85 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                    //Deep
-                    case 3: {
-                        int randomEntityLevel = r.nextInt(6)+9;
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Wolf(randomEntityLevel, randomEntityLevel * 0.6);
-                                break;
-                            }
-                            case 2: {
-                                e = new Zombie(randomEntityLevel, 0.75 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Spider(randomEntityLevel, 0.25 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new Bear(randomEntityLevel, 0.85 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                }
+                doEntityDifficultySelectionForForest(newEntityIndex, mapDifficultySelection);
                 break;
             }
             case 3: {
-                switch (mapDifficultySelection) {
-                    //The Edge
-                    case 1: {
-                        int randomEntityLevel = r.nextInt(4)+1;
-                        //Entity type selection
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Goblin(randomEntityLevel, randomEntityLevel * 0.3);
-                                break;
-                            }
-                            case 2: {
-                                e = new Griffin(randomEntityLevel, 1.8 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Ghost(randomEntityLevel, 0.7 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new Werewolf(randomEntityLevel, 0.9 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                    //Crossing
-                    case 2: {
-                        int randomEntityLevel = r.nextInt(6)+4;
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Goblin(randomEntityLevel, randomEntityLevel * 0.3);
-                                break;
-                            }
-                            case 2: {
-                                e = new Griffin(randomEntityLevel, 1.8 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Ghost(randomEntityLevel, 0.7 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new Werewolf(randomEntityLevel, 0.9 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                    //Deep
-                    case 3: {
-                        int randomEntityLevel = r.nextInt(6)+9;
-                        switch (newEntityIndex) {
-                            case 1: {
-                                e = new Goblin(randomEntityLevel, randomEntityLevel * 0.3);
-                                break;
-                            }
-                            case 2: {
-                                e = new Griffin(randomEntityLevel, 1.8 * randomEntityLevel);
-                                break;
-                            }
-                            case 3:
-                                e = new Ghost(randomEntityLevel, 0.7 * randomEntityLevel);
-                                break;
-                            case 4: {
-                                e = new Werewolf(randomEntityLevel, 0.9 * randomEntityLevel);
-                            }
-                        }
-                        break;
-                    }
-                }
+                doEntityDifficultySelectionForMountains(newEntityIndex, mapDifficultySelection);
                 break;
             }
         }
 
+    }
+
+    //Mountains
+    private void doEntityDifficultySelectionForMountains(int newEntityIndex, int mapDifficultySelection) {
+        switch (mapDifficultySelection) {
+            //The Edge
+            case 1: {
+                int randomEntityLevel = r.nextInt(4)+1;
+                //Entity type selection
+                chooseRandomEntityForMountains(newEntityIndex, randomEntityLevel);
+                break;
+            }
+            //Crossing
+            case 2: {
+                int randomEntityLevel = r.nextInt(6)+4;
+                chooseRandomEntityForMountains(newEntityIndex, randomEntityLevel);
+                break;
+            }
+            //Deep
+            case 3: {
+                int randomEntityLevel = r.nextInt(6)+9;
+                chooseRandomEntityForMountains(newEntityIndex, randomEntityLevel);
+                break;
+            }
+        }
+    }
+    public void chooseRandomEntityForMountains(int newEntityIndex, int entityLevel) {
+        switch (newEntityIndex) {
+            case 1: {
+                e = new Goblin(entityLevel, entityLevel * 0.3);
+                break;
+            }
+            case 2: {
+                e = new Griffin(entityLevel, 1.8 * entityLevel);
+                break;
+            }
+            case 3:
+                e = new Ghost(entityLevel, 0.7 * entityLevel);
+                break;
+            case 4: {
+                e = new Werewolf(newEntityIndex, 0.9 * newEntityIndex);
+            }
+        }
+    }
+
+    //Forest
+    private void doEntityDifficultySelectionForForest(int newEntityIndex, int mapDifficultySelection) {
+        switch (mapDifficultySelection) {
+            //The Edge
+            case 1: {
+                int randomEntityLevel = r.nextInt(4)+1;
+                //Entity type selection
+                chooseRandomEntityForForest(newEntityIndex, randomEntityLevel);
+                break;
+            }
+            //Crossing
+            case 2: {
+                int randomEntityLevel = r.nextInt(6)+4;
+                chooseRandomEntityForForest(newEntityIndex, randomEntityLevel);
+                break;
+            }
+            //Deep
+            case 3: {
+                int randomEntityLevel = r.nextInt(6)+9;
+                chooseRandomEntityForForest(newEntityIndex, randomEntityLevel);
+                break;
+            }
+        }
+    }
+    public void chooseRandomEntityForForest(int newEntityIndex, int entityLevel) {
+        switch (newEntityIndex) {
+            case 1: {
+                e = new Wolf(entityLevel, entityLevel * 0.6);
+                break;
+            }
+            case 2: {
+                e = new Zombie(entityLevel, 0.75 * entityLevel);
+                break;
+            }
+            case 3:
+                e = new Spider(entityLevel, 0.25 * entityLevel);
+                break;
+            case 4: {
+                e = new Bear(entityLevel, 0.85 * entityLevel);
+            }
+        }
+    }
+
+    //Plains
+    public void doEntityDifficultySelectionForPlains(int entityIndex, int mapDifficultySelection) {
+        switch (mapDifficultySelection) {
+            //The Edge
+            case 1: {
+                int randomEntityLevel = r.nextInt(4)+1;
+                //Entity type selection
+                chooseRandomEntityForPlains(entityIndex, randomEntityLevel);
+                break;
+            }
+            //Crossing
+            case 2: {
+                int randomEntityLevel = r.nextInt(6)+4;
+                chooseRandomEntityForPlains(entityIndex, randomEntityLevel);
+                break;
+            }
+            //Deep
+            case 3: {
+                int randomEntityLevel = r.nextInt(6)+9;
+                chooseRandomEntityForPlains(entityIndex, randomEntityLevel);
+                break;
+            }
+        }
+    }
+    public void chooseRandomEntityForPlains(int newEntityIndex, int entityLevel) {
+        switch (newEntityIndex) {
+            case 1: {
+                e = new Slime(entityLevel, 0.2* entityLevel);
+                break;
+            }
+            case 2: {
+                e = new Bandit(entityLevel, 0.6 * entityLevel);
+                break;
+            }
+            case 3:
+                e = new Snake(entityLevel, 0.75 * entityLevel);
+                break;
+            case 4: {
+                e = new EarthGolem(entityLevel, 1.2 * entityLevel);
+            }
+        }
     }
 
     //Item use loop
@@ -599,37 +547,45 @@ public class AdventureGame {
                     System.out.println("====================");
                     System.out.println("What Item do you want to use?");
                     System.out.println("====================");
+
                     int itemIndex = 9999;
-                    if (scanner.hasNextInt()) {
-                        int input = scanner.nextInt() - 1;
-                        if (0 <= input && input <= player.getPlayerInventory().getPotionInInventory().size()) {
-                            itemIndex = input;
-                        } else {
-                            System.out.println("Use the options above!");
-                        }
-                    } else {
-                        System.out.println("Use digits like '1'!");
-                    }
-
-                    if (itemIndex != 9999) {
-                        Potion consumingPotion = player.getPlayerInventory().getPotionInInventory().get(itemIndex);
-                        switch (consumingPotion.getPotionIdentifier()){
-                            case 1: consumingPotion.consumePotion(consumingPotion, player);
-                            break;
-                            case 2: consumingPotion.consumePotionDealingDamage(e, consumingPotion, this);
-                            break;
-                        }
-
-
-                        if (consumingPotion.getPotionAmount() == 0) {
-                            player.getPlayerInventory().getPotionInInventory().remove(itemIndex);
-                        }
-                    }
+                    itemIndex = checkForCorrectUserInputInItemSelection();
+                    processCorrectUserInputForPotion(itemIndex);
                 } else {
                     System.out.println("You don't have any potions in your inventory.");
                 }
             break;
         }
+    }
+    public void processCorrectUserInputForPotion(int itemIndex) {
+        if (itemIndex != 9999) {
+            Potion consumingPotion = player.getPlayerInventory().getPotionInInventory().get(itemIndex);
+            switch (consumingPotion.getPotionIdentifier()){
+                case 1: consumingPotion.consumePotion(consumingPotion, player);
+                    break;
+                case 2: consumingPotion.consumePotionDealingDamage(e, consumingPotion, this);
+                    break;
+            }
+
+
+            if (consumingPotion.getPotionAmount() == 0) {
+                player.getPlayerInventory().getPotionInInventory().remove(itemIndex);
+            }
+        }
+    }
+    public int checkForCorrectUserInputInItemSelection() {
+
+        if (scanner.hasNextInt()) {
+            int input = scanner.nextInt() - 1;
+            if (0 <= input && input <= player.getPlayerInventory().getPotionInInventory().size()) {
+                return input;
+            } else {
+                System.out.println("Use the options above!");
+            }
+        } else {
+            System.out.println("Use digits like '1'!");
+        }
+        return 9999;
     }
 
     public void processItemConsumeInput() {
@@ -674,13 +630,12 @@ public class AdventureGame {
 
     public boolean processPlayerMenuInput() {
         if (scanner.hasNextInt()) {
-            int attackMenuInput = scanner.nextInt();
-
-            if (attackMenuInput == 1) {
+            int input = scanner.nextInt();
+            if (input == 1) {
                 int attackOptionsIndex = showDifferentAttackingOptionsForPlayer();
                 return player.playerAttacksOtherEntity(scanner,e, attackOptionsIndex, this);
             }
-            if (attackMenuInput == 2) {
+            if (input == 2) {
                 //Inventory Menu Loop
                 boolean playerWantsToExitInventory = true;
 
@@ -689,7 +644,6 @@ public class AdventureGame {
                     playerWantsToExitInventory = processPlayerInventoryMenuInput();
                 }
             }
-
         } else {
             System.out.println("Use digits like '1'!");
             return true;
