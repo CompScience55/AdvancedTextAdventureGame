@@ -26,6 +26,9 @@ public class Player implements Serializable {
     //Player Utils
     private Inventory playerInventory;
     private ArrayList<MagicSpell> magicSpells = new ArrayList<>();
+    //Attacks
+    private ArrayList<Attack> playerAttacks = new ArrayList<>();
+
     //Money
     private double moneyCounter;
 
@@ -48,6 +51,7 @@ public class Player implements Serializable {
         this.moneyCounter = 30;
         //Starting Spell
         magicSpells.add(new MagicSpell("Fire", 20, 12, this, 25, 30));
+        playerAttacks.add(new Attack("Kick", damagePoints+3));
     }
 
     //Using Magic
@@ -72,18 +76,48 @@ public class Player implements Serializable {
     public boolean playerAttacksOtherEntity(Scanner scanner,Entity e, int attackOptionIndex, AdventureGame game) {
         return handleAttackOptionsInput(attackOptionIndex, e, game, scanner);
     }
+
+    public void showPlayerAttacks() {
+        System.out.println("====================");
+        for (int i = 0; i < playerAttacks.size(); i++) {
+            System.out.println(i+1 + ": " + playerAttacks.get(i).getName());
+        }
+    }
+
+    public int getPlayerAttackMenuInput() {
+        System.out.println("====================");
+        System.out.println("Which attack do you want to use?");
+        Scanner scanner = new Scanner(System.in);
+
+        if (scanner.hasNextInt()) {
+            int attackIndex = scanner.nextInt();
+            attackIndex--;
+            return attackIndex;
+        } else {
+            System.out.println("Use digits like '1'!");
+            return 9999;
+        }
+
+    }
     public boolean handleAttackOptionsInput(int index, Entity e, AdventureGame game, Scanner scanner) {
         if (index == 1)  {
+            Attack attack = new Attack("Punch", damagePoints);
+            showPlayerAttacks();
+            int attackIndex = getPlayerAttackMenuInput();
+            if (attackIndex != 9999) {
+                attack = playerAttacks.get(attackIndex);
+            }
+
             System.out.println("You attack a " + e.getEntityName() + ".");
             int randomHitChanceIndex = r.nextInt(100) + 1;
             int randomCriticalChanceIndex = r.nextInt(100)+1;
 
             //Hit missed
             if (randomHitChanceIndex <= 15) {
-                System.out.println("Your hit was blocked by your enemy!");
+                System.out.println("Your attack was blocked by your enemy!");
                 return true;
-            } else {
-                checkForHitType(randomCriticalChanceIndex, game, e);
+            } else if (attack != null){
+                attack.useAttackOnEntity(this, e);
             }
         }
         else  {
@@ -93,21 +127,6 @@ public class Player implements Serializable {
         }
         return true;
     }
-    public boolean checkForHitType(int hitIndex, AdventureGame game, Entity e) {
-
-        //Critical Hit
-        if (hitIndex <= 10) {
-            System.out.println("CRITICAL HIT! You dealt " + damagePoints*1.5 + " HP damage by punching your enemy.");
-            e.setHealthPoints(e.getHealthPoints() - damagePoints*1.5);
-            return e.checkForEntityDeath(this, game);
-        } else {
-            //Normal Hit
-            System.out.println("You dealt " + damagePoints + " HP damage by punching your enemy.");
-            e.setHealthPoints(e.getHealthPoints() - damagePoints);
-            return e.checkForEntityDeath(this, game);
-        }
-    }
-
 
     public void checkForLevelUp() {
         if (currentXpProgressionCounter >= xpBorder) {
