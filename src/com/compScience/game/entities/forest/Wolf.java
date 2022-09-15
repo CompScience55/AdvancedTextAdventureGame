@@ -7,7 +7,7 @@ public class Wolf extends Entity {
     private final double customXPAmount;
 
     public Wolf(int level, double customMoneyDropAmount) {
-        super("Wolf", 9 + level, 16 +  level, level, customMoneyDropAmount);
+        super("Wolf", 8 + 0.75*level, 16 +  level, level, customMoneyDropAmount);
         this.customXPAmount = level * 3;
     }
 }

@@ -8,7 +8,7 @@ public class Slime extends Entity {
     private final double customXPAmount;
 
     public Slime(int level, double customMoneyDropAmount) {
-        super("Slime", 6+level, 15+5*level, level, customMoneyDropAmount);
+        super("Slime", level * 0.25, 15+5*level, level, customMoneyDropAmount);
         this.customXPAmount = level * 2;
     }
 

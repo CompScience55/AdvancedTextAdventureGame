@@ -412,7 +412,7 @@ public class AdventureGame {
                 e = new Ghost(entityLevel, 0.7 * entityLevel);
                 break;
             case 4: {
-                e = new Werewolf(newEntityIndex, 0.9 * newEntityIndex);
+                e = new Werewolf(entityLevel, 0.9 * newEntityIndex);
             }
         }
     }

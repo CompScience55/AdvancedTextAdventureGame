@@ -110,7 +110,6 @@ public class Player implements Serializable {
 
             System.out.println("You attack a " + e.getEntityName() + ".");
             int randomHitChanceIndex = r.nextInt(100) + 1;
-            int randomCriticalChanceIndex = r.nextInt(100)+1;
 
             //Hit missed
             if (randomHitChanceIndex <= 15) {
@@ -118,6 +117,7 @@ public class Player implements Serializable {
                 return true;
             } else if (attack != null){
                 attack.useAttackOnEntity(this, e);
+                return e.checkForEntityDeath(this, game);
             }
         }
         else  {

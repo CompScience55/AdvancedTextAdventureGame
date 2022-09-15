@@ -7,7 +7,7 @@ public class Bear extends Entity {
     private final double customXPAmount;
 
     public Bear(int level, double customMoneyDropAmount) {
-        super("Bear", 11 + 0.25 * level, 10 + 3 * level, level, customMoneyDropAmount);
+        super("Bear", 10 + 0.2 * level, 15 + 3 * level, level, customMoneyDropAmount);
         this.customXPAmount = level*6;
     }
 }

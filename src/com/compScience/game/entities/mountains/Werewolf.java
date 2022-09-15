@@ -7,7 +7,7 @@ public class Werewolf extends Entity {
     private final double customXPAmount;
 
     public Werewolf(int level, double customMoneyDropAmount) {
-        super("Werewolf", 6 + level, 25 + level, level, customMoneyDropAmount);
+        super("Werewolf", 6 + 1.2*level, 25 + level, level, customMoneyDropAmount);
         this.customXPAmount = level * 7;
     }
 }
