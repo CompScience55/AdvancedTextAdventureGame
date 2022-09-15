@@ -7,7 +7,7 @@ public class Ghost extends Entity {
     private final double customXPAmount;
 
     public Ghost(int level, double customMoneyDropAmount) {
-        super("Ghost", level, 1.25 * level, level, customMoneyDropAmount);
+        super("Ghost", level+2, 2.25 * level, level, customMoneyDropAmount);
         this.customXPAmount = level * 4.5;
     }
 }
