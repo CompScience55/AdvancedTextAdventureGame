@@ -50,4 +50,8 @@ public class Inventory implements Serializable {
     public void setPotionInInventory(ArrayList<Potion> potionInInventory) {
         this.potionInInventory = potionInInventory;
     }
+
+    public ArrayList<Item> getItemInInventory() {
+        return itemInInventory;
+    }
 }

@@ -689,7 +689,6 @@ public class AdventureGame {
                     playerWantsToExitInventory = processPlayerInventoryMenuInput();
                 }
             }
-
         } else {
             System.out.println("Use digits like '1'!");
             return true;
@@ -710,6 +709,10 @@ public class AdventureGame {
 
              if (!isPlayerAlive) {
                  return 0;
+             }
+
+             if (!isEnemyAlive){
+                 e.dropRandomItem(player);
              }
         }
         return 1;

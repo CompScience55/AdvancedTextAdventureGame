@@ -1,5 +1,7 @@
 package com.compScience.game.utils;
 
+import java.util.ArrayList;
+
 public class Item {
 
     private String name;
