@@ -21,7 +21,6 @@ public class Inventory implements Serializable {
         potionInInventory.add(new Potion("Fire Potion", 20, 2, 1, inventoryOwner, 2));
     }
 
-
     public void showInventoryContent() {
         System.out.println("====================");
         //Loop for showing default items
@@ -41,6 +40,10 @@ public class Inventory implements Serializable {
                 }
             }
         }
+    }
+
+    public ArrayList<Item> getItemInInventory() {
+        return itemInInventory;
     }
 
     public ArrayList<Potion> getPotionInInventory() {

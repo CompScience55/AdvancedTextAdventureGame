@@ -353,8 +353,9 @@ public class AdventureGame {
     //method for creating random enemies
     public void createNewRandomEntity(int mapDifficultySelection, int mapZoneSelection) {
 
-        int newEntityIndex = r.nextInt(4)+1;
+        //TODO: Logic for boss selection
 
+        int newEntityIndex = r.nextInt(4)+1;
         //Entity with Zone and Level
         switch (mapZoneSelection) {
             case 1: {
@@ -373,7 +374,6 @@ public class AdventureGame {
         }
 
     }
-
     //Mountains
     private void doEntityDifficultySelectionForMountains(int newEntityIndex, int mapDifficultySelection) {
         switch (mapDifficultySelection) {
@@ -416,7 +416,6 @@ public class AdventureGame {
             }
         }
     }
-
     //Forest
     private void doEntityDifficultySelectionForForest(int newEntityIndex, int mapDifficultySelection) {
         switch (mapDifficultySelection) {
@@ -459,7 +458,6 @@ public class AdventureGame {
             }
         }
     }
-
     //Plains
     public void doEntityDifficultySelectionForPlains(int entityIndex, int mapDifficultySelection) {
         switch (mapDifficultySelection) {
@@ -502,7 +500,6 @@ public class AdventureGame {
             }
         }
     }
-
     //Item use loop
     public void showInventoryMenuOptions() {
         System.out.println("====================");
@@ -664,6 +661,15 @@ public class AdventureGame {
 
              if (!isPlayerAlive) {
                  return 0;
+             }
+             if (!isEnemyAlive) {
+                 int randomIndex = r.nextInt(100)+1;
+                 if (randomIndex <= 3) {
+                     double coinsFound = r.nextDouble() + r.nextInt(23) + 1;
+                     player.setMoneyCounter(player.getMoneyCounter() + coinsFound);
+                     System.out.println("You just found " + coinsFound + " coins in a bag from your enemy!");
+                 }
+                 e.dropRandomItem(player);
              }
         }
         return 1;
