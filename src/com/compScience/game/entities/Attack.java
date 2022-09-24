@@ -12,7 +12,7 @@ public class Attack {
 
     public void useAttackOnPlayer(Player player, BossEntity attackUser) {
         System.out.println("====================");
-        System.out.println(attackUser.getBossName() + " attacks you with " + attackName + "!");
+        System.out.println(attackUser.getEntityName() + " attacks you with " + attackName + "!");
         System.out.println("You get " + attackDamage + " HP damage.");
         player.setHealthPoints(player.getHealthPoints() - attackDamage);
         System.out.println("====================");
@@ -22,7 +22,7 @@ public class Attack {
         System.out.println("====================");
         System.out.println("You use " + attackName + "!");
         System.out.println("You deal " + attackDamage + " HP damage.");
-        attackReceiver.setBossHp(attackReceiver.getBossHp() - attackDamage);
+        attackReceiver.setBossHp(attackReceiver.getHealthPoints() - attackDamage);
         System.out.println("====================");
     }
 

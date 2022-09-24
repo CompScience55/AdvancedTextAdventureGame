@@ -130,7 +130,7 @@ public class Player implements Serializable {
 
     public void checkForLevelUp() {
         if (currentXpProgressionCounter >= xpBorder) {
-            xpBorder += 50;
+            xpBorder += 30;
             currentXpProgressionCounter = 0;
             playerLevel++;
             damagePoints+=2;
@@ -207,5 +207,9 @@ public class Player implements Serializable {
 
     public ArrayList<MagicSpell> getMagicSpells() {
         return magicSpells;
+    }
+
+    public double getXpBorder() {
+        return xpBorder;
     }
 }

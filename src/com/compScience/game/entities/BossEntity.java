@@ -3,7 +3,7 @@ package com.compScience.game.entities;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BossEntity {
+public class BossEntity extends Entity {
 
     private double bossHp;
     private double bossDamage;
@@ -50,7 +50,7 @@ public class BossEntity {
         attack.useAttackOnPlayer(player, this);
     }
 
-    public double getBossHp() {
+    public double getHealthPoints() {
         return bossHp;
     }
 
@@ -58,7 +58,7 @@ public class BossEntity {
         this.bossHp = bossHp;
     }
 
-    public String getBossName() {
+    public String getEntityName() {
         return bossName;
     }
 
