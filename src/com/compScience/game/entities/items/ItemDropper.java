@@ -36,6 +36,32 @@ public class ItemDropper {
     private ArrayList<Item> rareBandit = new ArrayList<>();
     private ArrayList<Item> epicBandit = new ArrayList<>();
 
+    //Bear
+    private ArrayList<Item> commonBear = new ArrayList<>();
+    private ArrayList<Item> uncommonBear = new ArrayList<>();
+    private ArrayList<Item> rareBear = new ArrayList<>();
+    private ArrayList<Item> epicBear = new ArrayList<>();
+
+    //Spider
+    private ArrayList<Item> commonSpider = new ArrayList<>();
+    private ArrayList<Item> uncommonSpider = new ArrayList<>();
+    private ArrayList<Item> rareSpider = new ArrayList<>();
+    private ArrayList<Item> epicSpider = new ArrayList<>();
+
+    //Wolf
+    private ArrayList<Item> commonWolf = new ArrayList<>();
+    private ArrayList<Item> uncommonWolf = new ArrayList<>();
+    private ArrayList<Item> rareWolf = new ArrayList<>();
+    private ArrayList<Item> epicWolf = new ArrayList<>();
+
+    //Zombie
+    private ArrayList<Item> commonZombie = new ArrayList<>();
+    private ArrayList<Item> uncommonZombie = new ArrayList<>();
+    private ArrayList<Item> rareZombie = new ArrayList<>();
+    private ArrayList<Item> epicZombie = new ArrayList<>();
+
+
+
     private Random r = new Random();
 
     private Entity e;
@@ -72,16 +98,16 @@ public class ItemDropper {
     //EarthGolem Entity:
     private void createEarthGolemItems(){
         //common
-        createMobItem("Dirt", 4, "Material", 0.1, commonEarthGolem, "COMMONEarthGolem");
+        createMobItem("Dirt", 4, "Material", 0.1, commonEarthGolem, "COMMONEarth Golem");
         //medium
-        createMobItem("Stone", 2, "Material", 0.1, uncommonEarthGolem, "UNCOMMONEarthGolem");
+        createMobItem("Stone", 2, "Material", 0.1, uncommonEarthGolem, "UNCOMMONEarth Golem");
         //rare
-        createMobItem("Gold", 1, "Material", 10, rareEarthGolem, "RAREEarthGolem");
+        createMobItem("Gold", 1, "Material", 10, rareEarthGolem, "RAREEarth Golem");
         //epic
-        createMobItem("Meteorite", 1, "Material", 20, epicEarthGolem, "EPICEarthGolem");
+        createMobItem("Meteorite", 1, "Material", 20, epicEarthGolem, "EPICEarth Golem");
     }
 
-    //EarthGolem Entity:
+    //Bandit Entity:
     private void createBanditItems(){
         //common
         createMobItem("Old Dagger", 1, "Weapon", 2, commonBandit, "COMMONBandit");
@@ -91,6 +117,50 @@ public class ItemDropper {
         createMobItem("Jewels", 1, "Material", 8, rareBandit, "RAREBandit");
         //epic
         createMobItem("A Bag full of Coins.", 1, "Material", 25, epicBandit, "EPICBandit");
+    }
+
+    private void createBearItems(){
+        //common
+        createMobItem("Bear Claw", 1, "Material", 2, commonBear, "COMMONBear");
+        //medium
+        createMobItem("Bear Fur", 1, "Material", 4, uncommonBear, "UNCOMMONBear");
+        //rare
+        createMobItem("Bear Head", 1, "Material", 6, rareBear, "RAREBear");
+        //epic
+        createMobItem("Bear Eye", 1, "Material", 11, epicBear, "EPICBear");
+    }
+
+    private void createSpiderItems(){
+        //common
+        createMobItem("String", 1, "Material", 0.5, commonSpider, "COMMONSpider");
+        //medium
+        createMobItem("Spider Eye", 1, "Material", 1, uncommonSpider, "UNCOMMONSpider");
+        //rare
+        createMobItem("Spider Leg", 1, "Material", 2, rareSpider, "RARESpider");
+        //epic
+        createMobItem("Spider's Poison", 1, "Material", 9, epicSpider, "EPICSpider");
+    }
+
+    private void createWolfItems(){
+        //common
+        createMobItem("Wolf Claw", 1, "Material", 2, commonWolf, "COMMONWolf");
+        //medium
+        createMobItem("Wolf Fur", 1, "Material", 3, uncommonWolf, "UNCOMMONWolf");
+        //rare
+        createMobItem("Wolf Teeth", 1, "Material", 6, rareWolf, "RAREWolf");
+        //epic
+        createMobItem("Wolf Head", 1, "Material", 9, epicWolf, "EPICWolf");
+    }
+
+    private void createZombieItems(){
+        //common
+        createMobItem("Rotten Flesh", 1, "Material", 0.5, commonZombie, "COMMONZombie");
+        //medium
+        createMobItem("Cloth", 1, "Material", 2, uncommonZombie, "UNCOMMONZombie");
+        //rare
+        createMobItem("Worn Leggings", 1, "Material", 4, rareZombie, "RAREZombie");
+        //epic
+        createMobItem("A Golden Watch", 1, "Material", 14, epicZombie, "EPICZombie");
     }
 
     private void createMobItem(String name, int amount, String identifier, double howMuchCoinsWorth, ArrayList<Item> itemArrayList, String rarityIdentifier) {
@@ -116,7 +186,10 @@ public class ItemDropper {
         String identifier = getItemRarity() + e.getName();
         ArrayList<Item> itemsToDrop = mobItems.get(identifier);
         //zufälliges Item auswählen
-        player.getPlayerInventory().getItemInInventory().add(itemsToDrop.get(new Random().nextInt(itemsToDrop.size())));
+        Item item = itemsToDrop.get(new Random().nextInt(itemsToDrop.size()));
+        player.getPlayerInventory().getItemInInventory().add(item);
+        System.out.println("Your enemy dropped " + item.getName() + ".");
+        System.out.println("====================");
     }
 
     private void createEntityItems (String entityName){
@@ -127,11 +200,23 @@ public class ItemDropper {
             case "Snake":
                 createSnakeItems();
                 break;
-            case "EarthGolem":
+            case "Earth Golem":
                 createEarthGolemItems();
                 break;
             case "Bandit":
                 createBanditItems();
+                break;
+            case "Bear":
+                createBearItems();
+                break;
+            case "Spider":
+                createSpiderItems();
+                break;
+            case "Wolf":
+                createWolfItems();
+                break;
+            case "Zombie":
+                createZombieItems();
                 break;
         }
     }

@@ -274,10 +274,10 @@ public class AdventureGame {
     }
     private int setMerchantSpawnChanceBoundary(int mapDifficultySelection) {
         if (mapDifficultySelection == 1) {
-            return 90;
+            return 10;
         }
         if (mapDifficultySelection == 2) {
-            return 90; //TODO: Reset values
+            return 15; //TODO: Reset values
         } else {
             return 25;
         }
