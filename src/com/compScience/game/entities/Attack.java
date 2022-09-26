@@ -37,4 +37,12 @@ public class Attack {
     public String getName() {
         return attackName;
     }
+
+    public void setAttackDamage(double attackDamage) {
+        this.attackDamage = attackDamage;
+    }
+
+    public double getAttackDamage() {
+        return attackDamage;
+    }
 }
