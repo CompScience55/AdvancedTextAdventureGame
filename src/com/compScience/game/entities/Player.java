@@ -133,10 +133,15 @@ public class Player implements Serializable {
             xpBorder += 30;
             currentXpProgressionCounter = 0;
             playerLevel++;
-            damagePoints+=2;
-            healthPoints+=5;
+            damagePoints+=3;
+            healthPoints+=6;
             playerLevelHealthPoints = healthPoints;
             playerLevelManaPoints = manaPoints;
+            setHealthPoints(playerLevelHealthPoints);
+            setManaPoints(playerLevelManaPoints);
+            for (Attack att: playerAttacks) {
+                att.setAttackDamage(att.getAttackDamage() + 3);
+            }
             System.out.println("You level increased to " + playerLevel + "!");
         }
     }

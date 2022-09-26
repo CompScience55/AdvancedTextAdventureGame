@@ -187,7 +187,15 @@ public class ItemDropper {
         ArrayList<Item> itemsToDrop = mobItems.get(identifier);
         //zufälliges Item auswählen
         Item item = itemsToDrop.get(new Random().nextInt(itemsToDrop.size()));
-        player.getPlayerInventory().getItemInInventory().add(item);
+        if (player.getPlayerInventory().getItemInInventory().contains(item)) {
+            for (Item item1: player.getPlayerInventory().getItemInInventory()) {
+                if (item1.getName().equals(item.getName())) {
+                    item1.setAmount(item.getAmount() + item.getAmount());
+                }
+            }
+        } else {
+            player.getPlayerInventory().getItemInInventory().add(item);
+        }
         System.out.println("Your enemy dropped " + item.getName() + ".");
         System.out.println("====================");
     }
