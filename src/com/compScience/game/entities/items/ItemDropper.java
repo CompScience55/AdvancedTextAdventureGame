@@ -60,8 +60,29 @@ public class ItemDropper {
     private ArrayList<Item> rareZombie = new ArrayList<>();
     private ArrayList<Item> epicZombie = new ArrayList<>();
 
+    //Ghost
+    private ArrayList<Item> commonGhost = new ArrayList<>();
+    private ArrayList<Item> uncommonGhost = new ArrayList<>();
+    private ArrayList<Item> rareGhost = new ArrayList<>();
+    private ArrayList<Item> epicGhost = new ArrayList<>();
 
+    //Goblin
+    private ArrayList<Item> commonGoblin = new ArrayList<>();
+    private ArrayList<Item> uncommonGoblin = new ArrayList<>();
+    private ArrayList<Item> rareGoblin = new ArrayList<>();
+    private ArrayList<Item> epicGoblin = new ArrayList<>();
 
+    //Griffin
+    private ArrayList<Item> commonGriffin = new ArrayList<>();
+    private ArrayList<Item> uncommonGriffin = new ArrayList<>();
+    private ArrayList<Item> rareGriffin = new ArrayList<>();
+    private ArrayList<Item> epicGriffin = new ArrayList<>();
+
+    //Werewolf
+    private ArrayList<Item> commonWerewolf = new ArrayList<>();
+    private ArrayList<Item> uncommonWerewolf = new ArrayList<>();
+    private ArrayList<Item> rareWerewolf = new ArrayList<>();
+    private ArrayList<Item> epicWerewolf = new ArrayList<>();
     private Random r = new Random();
 
     private Entity e;
@@ -156,11 +177,55 @@ public class ItemDropper {
         //common
         createMobItem("Rotten Flesh", 1, "Material", 0.5, commonZombie, "COMMONZombie");
         //medium
-        createMobItem("Cloth", 1, "Material", 2, uncommonZombie, "UNCOMMONZombie");
+        createMobItem("Cloth", 1, "Armour", 2, uncommonZombie, "UNCOMMONZombie");
         //rare
-        createMobItem("Worn Leggings", 1, "Material", 4, rareZombie, "RAREZombie");
+        createMobItem("Worn Leggings", 1, "Armour", 4, rareZombie, "RAREZombie");
         //epic
         createMobItem("A Golden Watch", 1, "Material", 14, epicZombie, "EPICZombie");
+    }
+
+    private void createGhostItems(){
+        //common
+        createMobItem("Worn Leggings", 1, "Armour", 0.5, commonGhost, "COMMONGhost");
+        //medium
+        createMobItem("Rosty Sword", 1, "Weapon", 3, uncommonGhost, "UNCOMMONGhost");
+        //rare
+        createMobItem("Soulsand", 1, "Material", 5, rareGhost, "RAREGhost");
+        //epic
+        createMobItem("Shining Diamond", 1, "Material", 15, epicGhost, "EPICGhost");
+    }
+
+    private void createGoblinItems(){
+        //common
+        createMobItem("Rosty Ring", 1, "Armour", 0.5, commonGoblin, "COMMONGoblin");
+        //medium
+        createMobItem("Claws", 1, "Weapon", 2, uncommonGoblin, "UNCOMMONGoblin");
+        //rare
+        createMobItem("Gear Wheel", 2, "Material", 2, rareGoblin, "RAREGoblin");
+        //epic
+        createMobItem("Goblin's Helmet", 1, "Armour", 7, epicGoblin, "EPICGoblin");
+    }
+
+    private void createGriffinItems(){
+        //common
+        createMobItem("Feather", 1, "Material", 1, commonGriffin, "COMMONGriffin");
+        //medium
+        createMobItem("Griffin's Eye", 1, "Material", 4, uncommonGriffin, "UNCOMMONGriffin");
+        //rare
+        createMobItem("Griffin's Wing", 1, "Material", 8, rareGriffin, "RAREGriffin");
+        //epic
+        createMobItem("Griffin's Claw", 1, "Weapon", 12, epicGriffin, "EPICGriffin");
+    }
+
+    private void createWerewolfItems(){
+        //common
+        createMobItem("Werewolf Claw", 1, "Material", 4, commonWerewolf, "COMMONWerewolf");
+        //medium
+        createMobItem("Werewolf Fur", 1, "Material", 7, uncommonWerewolf, "UNCOMMONWerewolf");
+        //rare
+        createMobItem("Werewolf Head", 1, "Material", 9, rareWerewolf, "RAREWerewolf");
+        //epic
+        createMobItem("Werewolf Heart", 1, "Weapon", 14, epicWerewolf, "EPICWerewolf");
     }
 
     private void createMobItem(String name, int amount, String identifier, double howMuchCoinsWorth, ArrayList<Item> itemArrayList, String rarityIdentifier) {
@@ -225,6 +290,18 @@ public class ItemDropper {
                 break;
             case "Zombie":
                 createZombieItems();
+                break;
+            case "Ghost":
+                createGhostItems();
+                break;
+            case "Goblin":
+                createGoblinItems();
+                break;
+            case "Griffin":
+                createGriffinItems();
+                break;
+            case "Werewolf":
+                createWerewolfItems();
                 break;
         }
     }
